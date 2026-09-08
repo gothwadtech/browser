@@ -6,5 +6,6 @@
 /build
 /captures
 *.keystore
+!debug.keystore
 *.hprof
 /buildSrc/build
