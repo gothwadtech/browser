@@ -43,7 +43,14 @@ jobs:
           if [ -n "${{ inputs.version_code }}" ]; then
             V_CODE="${{ inputs.version_code }}"
           else
-            V_CODE=$(( 10 + ${{ github.run_number }} ))
+            # Reset version code starting from 1 (offset by 105)
+            OFFSET=105
+            CALC=$(( ${{ github.run_number }} - OFFSET ))
+            if [ "$CALC" -lt 1 ]; then
+              V_CODE=1
+            else
+              V_CODE=$CALC
+            fi
           fi
 
           if [ -n "${{ inputs.version_name }}" ]; then
