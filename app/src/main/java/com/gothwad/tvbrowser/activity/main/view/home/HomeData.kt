@@ -1,6 +1,6 @@
-package com.gothwad.tvbrowser.activity.main.view.home
+package com.gothwad.browser.activity.main.view.home
 
-import com.gothwad.tvbrowser.R
+import com.gothwad.browser.R
 
 data class HomeShortcutItem(
     val title: String,

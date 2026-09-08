@@ -1,4 +1,4 @@
-package com.gothwad.tvbrowser.activity.main.view
+package com.gothwad.browser.activity.main.view
 
 import android.content.Context
 import android.content.res.ColorStateList
@@ -14,13 +14,13 @@ import android.view.animation.Animation
 import android.view.inputmethod.InputMethodManager
 import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
-import com.gothwad.tvbrowser.AppContext
-import com.gothwad.tvbrowser.Config
-import com.gothwad.tvbrowser.R
-import com.gothwad.tvbrowser.activity.downloads.ActiveDownloadsModel
-import com.gothwad.tvbrowser.databinding.ViewActionbarBinding
-import com.gothwad.tvbrowser.utils.Utils
-import com.gothwad.tvbrowser.utils.activemodel.ActiveModelsRepository
+import com.gothwad.browser.AppContext
+import com.gothwad.browser.Config
+import com.gothwad.browser.R
+import com.gothwad.browser.activity.downloads.ActiveDownloadsModel
+import com.gothwad.browser.databinding.ViewActionbarBinding
+import com.gothwad.browser.utils.Utils
+import com.gothwad.browser.utils.activemodel.ActiveModelsRepository
 
 class ActionBar @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null
@@ -83,13 +83,11 @@ class ActionBar @JvmOverloads constructor(
 
     private val etUrlKeyListener = OnKeyListener { view, i, keyEvent ->
         when (keyEvent.keyCode) {
-            KeyEvent.KEYCODE_ENTER -> {
+            KeyEvent.KEYCODE_ENTER,
+            KeyEvent.KEYCODE_NUMPAD_ENTER,
+            KeyEvent.KEYCODE_DPAD_CENTER -> {
                 if (keyEvent.action == KeyEvent.ACTION_UP) {
-                    val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                    imm.hideSoftInputFromWindow(vb.etUrl.windowToken, 0)
-                    callback?.search(vb.etUrl.text.toString())
-                    dismissExtendedAddressBarMode()
-                    callback?.onUrlInputDone()
+                    performSearchInAddressBar()
                 }
                 return@OnKeyListener true
             }
@@ -137,6 +135,18 @@ class ActionBar @JvmOverloads constructor(
 
         vb.etUrl.onFocusChangeListener = etUrlFocusChangeListener
         vb.etUrl.setOnKeyListener(etUrlKeyListener)
+        vb.etUrl.setOnEditorActionListener { _, actionId, event ->
+            if (actionId == android.view.inputmethod.EditorInfo.IME_ACTION_SEARCH ||
+                actionId == android.view.inputmethod.EditorInfo.IME_ACTION_GO ||
+                actionId == android.view.inputmethod.EditorInfo.IME_ACTION_DONE ||
+                (event != null && event.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP)
+            ) {
+                performSearchInAddressBar()
+                true
+            } else {
+                false
+            }
+        }
         vb.etUrl.addTextChangedListener(object : android.text.TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
@@ -171,9 +181,9 @@ class ActionBar @JvmOverloads constructor(
             "google" -> R.drawable.ic_logo_google
             "bing" -> R.drawable.ic_logo_bing
             "ddg", "duckduckgo" -> R.drawable.ic_logo_duckduckgo
-            "perplexity" -> R.drawable.ic_logo_perplexity
-            "wikipedia" -> R.drawable.ic_logo_wikipedia
             "yahoo" -> R.drawable.ic_logo_yahoo
+            "yandex" -> R.drawable.ic_logo_yandex
+            "startpage" -> R.drawable.ic_logo_startpage
             else -> R.drawable.ic_logo_google
         }
     }
@@ -230,6 +240,17 @@ class ActionBar @JvmOverloads constructor(
 
     fun catchFocus() {
         vb.etUrl.requestFocus()
+    }
+
+    fun performSearchInAddressBar() {
+        val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+        imm?.hideSoftInputFromWindow(vb.etUrl.windowToken, 0)
+        val query = vb.etUrl.text.toString().trim()
+        if (query.isNotEmpty()) {
+            callback?.search(query)
+            dismissExtendedAddressBarMode()
+            callback?.onUrlInputDone()
+        }
     }
 
     fun getUrlEditText(): View = vb.etUrl

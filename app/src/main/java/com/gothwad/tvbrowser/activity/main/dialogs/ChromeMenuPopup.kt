@@ -1,4 +1,4 @@
-package com.gothwad.tvbrowser.activity.main.dialogs
+package com.gothwad.browser.activity.main.dialogs
 
 import android.app.AlertDialog
 import android.content.Intent
@@ -13,19 +13,19 @@ import android.widget.ImageButton
 import android.widget.PopupWindow
 import android.widget.TextView
 import android.widget.Toast
-import com.gothwad.tvbrowser.BuildConfig
-import com.gothwad.tvbrowser.Config
-import com.gothwad.tvbrowser.R
-import com.gothwad.tvbrowser.activity.downloads.DownloadsActivity
-import com.gothwad.tvbrowser.activity.lock.AppLockActivity
-import com.gothwad.tvbrowser.activity.main.MainActivity
-import com.gothwad.tvbrowser.activity.main.openInNewTab
-import com.gothwad.tvbrowser.activity.main.showClipboardActivity
-import com.gothwad.tvbrowser.activity.main.showHistoryActivity
-import com.gothwad.tvbrowser.activity.main.showSettingsDialog
-import com.gothwad.tvbrowser.activity.main.toggleIncognitoMode
-import com.gothwad.tvbrowser.notes.clipboard.ClipboardActivity
-import com.gothwad.tvbrowser.singleton.AppLockManager
+import com.gothwad.browser.BuildConfig
+import com.gothwad.browser.Config
+import com.gothwad.browser.R
+import com.gothwad.browser.activity.downloads.DownloadsActivity
+import com.gothwad.browser.activity.lock.AppLockActivity
+import com.gothwad.browser.activity.main.MainActivity
+import com.gothwad.browser.activity.main.openInNewTab
+import com.gothwad.browser.activity.main.showClipboardActivity
+import com.gothwad.browser.activity.main.showHistoryActivity
+import com.gothwad.browser.activity.main.showSettingsDialog
+import com.gothwad.browser.activity.main.toggleIncognitoMode
+import com.gothwad.browser.notes.clipboard.ClipboardActivity
+import com.gothwad.browser.singleton.AppLockManager
 
 class ChromeMenuPopup(private val activity: MainActivity) {
 
@@ -95,9 +95,9 @@ class ChromeMenuPopup(private val activity: MainActivity) {
                 AppLockManager.setSessionUnlocked(false)
                 activity.startActivity(Intent(activity, AppLockActivity::class.java))
             } else {
-                val dlg = com.gothwad.tvbrowser.activity.lock.TvPinDialog(
+                val dlg = com.gothwad.browser.activity.lock.TvPinDialog(
                     context = activity,
-                    mode = com.gothwad.tvbrowser.activity.lock.TvPinDialog.Mode.CREATE,
+                    mode = com.gothwad.browser.activity.lock.TvPinDialog.Mode.CREATE,
                     onSuccess = {
                         AppLockManager.setSessionUnlocked(false)
                         activity.startActivity(Intent(activity, AppLockActivity::class.java))

@@ -1,4 +1,4 @@
-package com.gothwad.tvbrowser.filemanager
+package com.gothwad.browser.filemanager
 
 import android.content.ActivityNotFoundException
 import android.content.Context
@@ -9,8 +9,8 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.FileProvider
-import com.gothwad.tvbrowser.BuildConfig
-import com.gothwad.tvbrowser.activity.main.openFileInNewTab
+import com.gothwad.browser.BuildConfig
+import com.gothwad.browser.activity.main.openFileInNewTab
 import java.io.File
 import java.io.FileOutputStream
 import java.util.Locale
@@ -116,7 +116,7 @@ object FileManagerOperations {
             FileViewerContentHelper.isCodeFile(ext) ||
             FileViewerContentHelper.isImage(ext) ||
             FileViewerContentHelper.isMedia(ext) -> {
-                if (context is com.gothwad.tvbrowser.activity.main.MainActivity) {
+                if (context is com.gothwad.browser.activity.main.MainActivity) {
                     context.openFileInNewTab(file)
                 } else {
                     InAppFileViewerActivity.start(context, file.absolutePath)

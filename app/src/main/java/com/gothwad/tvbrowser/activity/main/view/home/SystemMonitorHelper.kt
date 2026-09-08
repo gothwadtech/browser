@@ -1,4 +1,4 @@
-package com.gothwad.tvbrowser.activity.main.view.home
+package com.gothwad.browser.activity.main.view.home
 
 import android.app.ActivityManager
 import android.content.Context

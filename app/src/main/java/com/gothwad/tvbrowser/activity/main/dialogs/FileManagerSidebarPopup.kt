@@ -1,4 +1,4 @@
-package com.gothwad.tvbrowser.activity.main.dialogs
+package com.gothwad.browser.activity.main.dialogs
 
 import android.content.ActivityNotFoundException
 import android.content.Intent
@@ -24,9 +24,9 @@ import android.widget.Toast
 import androidx.core.content.FileProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.gothwad.tvbrowser.BuildConfig
-import com.gothwad.tvbrowser.R
-import com.gothwad.tvbrowser.activity.main.MainActivity
+import com.gothwad.browser.BuildConfig
+import com.gothwad.browser.R
+import com.gothwad.browser.activity.main.MainActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -299,13 +299,13 @@ class FileManagerSidebarPopup(private val activity: MainActivity) {
             loadDirectory(file, pushHistory = true)
         } else {
             dismiss()
-            com.gothwad.tvbrowser.filemanager.FileManagerOperations.openFile(activity, file)
+            com.gothwad.browser.filemanager.FileManagerOperations.openFile(activity, file)
         }
     }
 
     private fun onFileOptionsClicked(file: File) {
-        val fileItem = com.gothwad.tvbrowser.filemanager.FileItem(file = file)
-        com.gothwad.tvbrowser.filemanager.FileManagerOperations.showFileOptionsDialog(
+        val fileItem = com.gothwad.browser.filemanager.FileItem(file = file)
+        com.gothwad.browser.filemanager.FileManagerOperations.showFileOptionsDialog(
             context = activity,
             item = fileItem,
             onOpen = { onFileClicked(file) },
@@ -381,10 +381,10 @@ class FileManagerSidebarAdapter(
                     val context = v.context
                     val uri = androidx.core.content.FileProvider.getUriForFile(
                         context,
-                        "${com.gothwad.tvbrowser.BuildConfig.APPLICATION_ID}.provider",
+                        "${com.gothwad.browser.BuildConfig.APPLICATION_ID}.provider",
                         file
                     )
-                    val mimeType = com.gothwad.tvbrowser.filemanager.FileManagerOperations.getMimeType(file)
+                    val mimeType = com.gothwad.browser.filemanager.FileManagerOperations.getMimeType(file)
                     val clipItem = android.content.ClipData.Item(uri)
                     val clipData = android.content.ClipData(
                         file.name,

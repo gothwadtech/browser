@@ -1,9 +1,9 @@
-package com.gothwad.tvbrowser.activity.main.view.tabs
+package com.gothwad.browser.activity.main.view.tabs
 
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.gothwad.tvbrowser.model.WebTabState
+import com.gothwad.browser.model.WebTabState
 
 /**
  * Legacy TabsAdapter maintained for backward compatibility.

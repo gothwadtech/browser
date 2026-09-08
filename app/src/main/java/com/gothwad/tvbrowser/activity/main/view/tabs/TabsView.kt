@@ -1,9 +1,9 @@
-package com.gothwad.tvbrowser.activity.main.view.tabs
+package com.gothwad.browser.activity.main.view.tabs
 
 import android.content.Context
 import android.util.AttributeSet
 import android.widget.FrameLayout
-import com.gothwad.tvbrowser.model.WebTabState
+import com.gothwad.browser.model.WebTabState
 
 /**
  * Legacy TabsView maintained for backward compatibility.

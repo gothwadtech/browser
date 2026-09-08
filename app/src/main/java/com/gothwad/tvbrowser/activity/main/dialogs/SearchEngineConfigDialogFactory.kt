@@ -1,4 +1,4 @@
-package com.gothwad.tvbrowser.activity.main.dialogs
+package com.gothwad.browser.activity.main.dialogs
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -6,9 +6,9 @@ import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
-import com.gothwad.tvbrowser.Config
-import com.gothwad.tvbrowser.R
-import com.gothwad.tvbrowser.settings.SettingsModel
+import com.gothwad.browser.Config
+import com.gothwad.browser.R
+import com.gothwad.browser.settings.SettingsModel
 
 /**
  * Created by fedex on 18.01.17.

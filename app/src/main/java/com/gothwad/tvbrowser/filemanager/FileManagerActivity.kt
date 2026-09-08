@@ -1,4 +1,4 @@
-package com.gothwad.tvbrowser.filemanager
+package com.gothwad.browser.filemanager
 
 import android.Manifest
 import android.content.ClipData
@@ -38,9 +38,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.gothwad.tvbrowser.BuildConfig
-import com.gothwad.tvbrowser.R
-import com.gothwad.tvbrowser.utils.setupAsSidebar
+import com.gothwad.browser.BuildConfig
+import com.gothwad.browser.R
+import com.gothwad.browser.utils.setupAsSidebar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch

@@ -1,4 +1,4 @@
-package com.gothwad.tvbrowser.activity.main.dialogs
+package com.gothwad.browser.activity.main.dialogs
 
 import android.app.AlertDialog
 import android.content.Intent
@@ -16,17 +16,17 @@ import android.widget.ImageButton
 import android.widget.PopupWindow
 import android.widget.TextView
 import android.widget.Toast
-import com.gothwad.tvbrowser.Config
-import com.gothwad.tvbrowser.R
-import com.gothwad.tvbrowser.activity.main.MainActivity
-import com.gothwad.tvbrowser.activity.main.applyWebPageZoom
-import com.gothwad.tvbrowser.activity.main.openInNewTab
-import com.gothwad.tvbrowser.activity.main.view.home.HomeCardAdapter
-import com.gothwad.tvbrowser.activity.main.view.home.HomeData
-import com.gothwad.tvbrowser.activity.main.view.home.HomeShortcutItem
-import com.gothwad.tvbrowser.activity.main.view.home.NativeHomeView
-import com.gothwad.tvbrowser.activity.main.zoomWebIn
-import com.gothwad.tvbrowser.activity.main.zoomWebOut
+import com.gothwad.browser.Config
+import com.gothwad.browser.R
+import com.gothwad.browser.activity.main.MainActivity
+import com.gothwad.browser.activity.main.applyWebPageZoom
+import com.gothwad.browser.activity.main.openInNewTab
+import com.gothwad.browser.activity.main.view.home.HomeCardAdapter
+import com.gothwad.browser.activity.main.view.home.HomeData
+import com.gothwad.browser.activity.main.view.home.HomeShortcutItem
+import com.gothwad.browser.activity.main.view.home.NativeHomeView
+import com.gothwad.browser.activity.main.zoomWebIn
+import com.gothwad.browser.activity.main.zoomWebOut
 
 class WebsiteMenuPopup(private val activity: MainActivity) {
 

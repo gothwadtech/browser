@@ -1,4 +1,4 @@
-package com.gothwad.tvbrowser.filemanager
+package com.gothwad.browser.filemanager
 
 import android.content.ClipData
 import android.os.Build
@@ -11,7 +11,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.gothwad.tvbrowser.R
+import com.gothwad.browser.R
 import java.io.File
 
 class FileManagerAdapter(
@@ -149,7 +149,7 @@ class FileManagerAdapter(
                     val context = v.context
                     val uri = androidx.core.content.FileProvider.getUriForFile(
                         context,
-                        "${com.gothwad.tvbrowser.BuildConfig.APPLICATION_ID}.provider",
+                        "${com.gothwad.browser.BuildConfig.APPLICATION_ID}.provider",
                         item.file
                     )
                     val mimeType = FileManagerOperations.getMimeType(item.file)

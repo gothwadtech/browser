@@ -1,4 +1,4 @@
-package com.gothwad.tvbrowser.activity.main.dialogs.favorites
+package com.gothwad.browser.activity.main.dialogs.favorites
 
 import android.content.Context
 import android.graphics.Bitmap
@@ -12,10 +12,10 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
-import com.gothwad.tvbrowser.R
-import com.gothwad.tvbrowser.model.FavoriteItem
-import com.gothwad.tvbrowser.singleton.FaviconsPool
-import com.gothwad.tvbrowser.utils.activity
+import com.gothwad.browser.R
+import com.gothwad.browser.model.FavoriteItem
+import com.gothwad.browser.singleton.FaviconsPool
+import com.gothwad.browser.utils.activity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 

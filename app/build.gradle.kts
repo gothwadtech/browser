@@ -4,10 +4,10 @@ plugins {
 }
 
 android {
-    namespace = "com.gothwad.tvbrowser"
+    namespace = "com.gothwad.browser"
 
     defaultConfig {
-        applicationId = "com.gothwad.tvbrowser"
+        applicationId = "com.gothwad.browser"
         val vCode = (project.findProperty("versionCode") as? String)?.toIntOrNull() ?: 2
         val vName = (project.findProperty("versionName") as? String) ?: "1.0.$vCode"
         versionCode = vCode

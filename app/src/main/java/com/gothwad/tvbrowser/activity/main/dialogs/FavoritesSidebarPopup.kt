@@ -1,4 +1,4 @@
-package com.gothwad.tvbrowser.activity.main.dialogs
+package com.gothwad.browser.activity.main.dialogs
 
 import android.app.AlertDialog
 import android.graphics.Color
@@ -22,10 +22,10 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.gothwad.tvbrowser.R
-import com.gothwad.tvbrowser.activity.main.MainActivity
-import com.gothwad.tvbrowser.model.FavoriteItem
-import com.gothwad.tvbrowser.singleton.AppDatabase
+import com.gothwad.browser.R
+import com.gothwad.browser.activity.main.MainActivity
+import com.gothwad.browser.model.FavoriteItem
+import com.gothwad.browser.singleton.AppDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

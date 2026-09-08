@@ -1,6 +1,6 @@
-package com.gothwad.tvbrowser.filemanager
+package com.gothwad.browser.filemanager
 
-import com.gothwad.tvbrowser.R
+import com.gothwad.browser.R
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date

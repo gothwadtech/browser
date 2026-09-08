@@ -1,4 +1,4 @@
-package com.gothwad.tvbrowser.activity.main.dialogs
+package com.gothwad.browser.activity.main.dialogs
 
 import android.content.Context
 import android.content.Intent
@@ -14,21 +14,21 @@ import android.widget.ImageView
 import android.widget.PopupWindow
 import android.widget.TextView
 import android.widget.Toast
-import com.gothwad.tvbrowser.BuildConfig
-import com.gothwad.tvbrowser.Config
-import com.gothwad.tvbrowser.R
-import com.gothwad.tvbrowser.activity.lock.AppLockActivity
-import com.gothwad.tvbrowser.activity.lock.TvPinDialog
-import com.gothwad.tvbrowser.activity.main.MainActivity
-import com.gothwad.tvbrowser.activity.main.showClipboardActivity
-import com.gothwad.tvbrowser.activity.main.showDownloads
-import com.gothwad.tvbrowser.activity.main.showFavoritesDialog
-import com.gothwad.tvbrowser.activity.main.showFileManager
-import com.gothwad.tvbrowser.activity.main.showHistoryActivity
-import com.gothwad.tvbrowser.activity.main.showNotes
-import com.gothwad.tvbrowser.activity.main.showSettingsDialog
-import com.gothwad.tvbrowser.activity.main.toggleIncognitoMode
-import com.gothwad.tvbrowser.singleton.AppLockManager
+import com.gothwad.browser.BuildConfig
+import com.gothwad.browser.Config
+import com.gothwad.browser.R
+import com.gothwad.browser.activity.lock.AppLockActivity
+import com.gothwad.browser.activity.lock.TvPinDialog
+import com.gothwad.browser.activity.main.MainActivity
+import com.gothwad.browser.activity.main.showClipboardActivity
+import com.gothwad.browser.activity.main.showDownloads
+import com.gothwad.browser.activity.main.showFavoritesDialog
+import com.gothwad.browser.activity.main.showFileManager
+import com.gothwad.browser.activity.main.showHistoryActivity
+import com.gothwad.browser.activity.main.showNotes
+import com.gothwad.browser.activity.main.showSettingsDialog
+import com.gothwad.browser.activity.main.toggleIncognitoMode
+import com.gothwad.browser.singleton.AppLockManager
 
 class BrowserSidebarPopup(private val activity: MainActivity) {
 

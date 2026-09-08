@@ -1,4 +1,4 @@
-package com.gothwad.tvbrowser.browser.tabs
+package com.gothwad.browser.browser.tabs
 
 import android.content.Context
 import android.graphics.Bitmap
@@ -15,11 +15,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
-import com.gothwad.tvbrowser.Config
-import com.gothwad.tvbrowser.R
-import com.gothwad.tvbrowser.model.WebTabState
-import com.gothwad.tvbrowser.singleton.FaviconsPool
-import com.gothwad.tvbrowser.utils.activity
+import com.gothwad.browser.Config
+import com.gothwad.browser.R
+import com.gothwad.browser.model.WebTabState
+import com.gothwad.browser.singleton.FaviconsPool
+import com.gothwad.browser.utils.activity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 

@@ -1,4 +1,4 @@
-package com.gothwad.tvbrowser.activity.main.dialogs.favorites
+package com.gothwad.browser.activity.main.dialogs.favorites
 
 import android.app.AlertDialog
 import android.app.Dialog
@@ -11,9 +11,9 @@ import android.view.Window
 import android.widget.*
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.gothwad.tvbrowser.R
-import com.gothwad.tvbrowser.model.FavoriteItem
-import com.gothwad.tvbrowser.singleton.AppDatabase
+import com.gothwad.browser.R
+import com.gothwad.browser.model.FavoriteItem
+import com.gothwad.browser.singleton.AppDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

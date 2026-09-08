@@ -1,4 +1,4 @@
-package com.gothwad.tvbrowser.activity.main.view.home
+package com.gothwad.browser.activity.main.view.home
 
 import android.view.LayoutInflater
 import android.view.View
@@ -8,7 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.gothwad.tvbrowser.R
+import com.gothwad.browser.R
 
 class HomeCardAdapter(
     private var items: List<HomeShortcutItem>,

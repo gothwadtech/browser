@@ -20,6 +20,6 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
--keepclassmembers class * extends com.gothwad.tvbrowser.utils.activemodel.ActiveModel {
+-keepclassmembers class * extends com.gothwad.browser.utils.activemodel.ActiveModel {
    <init>(...);
 }

@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.gothwad.tvbrowser.common"
+    namespace = "com.gothwad.browser.common"
 }
 
 dependencies {

@@ -1,4 +1,4 @@
-package com.gothwad.tvbrowser.browser.tabs
+package com.gothwad.browser.browser.tabs
 
 import android.app.Dialog
 import android.os.Bundle
@@ -11,9 +11,9 @@ import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.gothwad.tvbrowser.R
-import com.gothwad.tvbrowser.activity.main.MainActivity
-import com.gothwad.tvbrowser.model.WebTabState
+import com.gothwad.browser.R
+import com.gothwad.browser.activity.main.MainActivity
+import com.gothwad.browser.model.WebTabState
 
 class TabsRowDialog(
     private val activity: MainActivity,

@@ -1,4 +1,4 @@
-package com.gothwad.tvbrowser.activity.main.dialogs
+package com.gothwad.browser.activity.main.dialogs
 
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -10,12 +10,9 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.PopupWindow
 import android.widget.Toast
-import com.gothwad.tvbrowser.Config
-import com.gothwad.tvbrowser.R
-import com.gothwad.tvbrowser.activity.main.MainActivity
-import com.gothwad.tvbrowser.activity.main.showFavoritesDialog
-import com.gothwad.tvbrowser.activity.main.showHistoryActivity
-import com.gothwad.tvbrowser.activity.main.showTabsRowDialog
+import com.gothwad.browser.Config
+import com.gothwad.browser.R
+import com.gothwad.browser.activity.main.MainActivity
 
 class SearchEngineMenuPopup(private val activity: MainActivity) {
 
@@ -79,14 +76,16 @@ class SearchEngineMenuPopup(private val activity: MainActivity) {
         val ivCheckGoogle: ImageView = contentView.findViewById(R.id.ivCheckGoogle)
         val ivCheckBing: ImageView = contentView.findViewById(R.id.ivCheckBing)
         val ivCheckDuckDuckGo: ImageView = contentView.findViewById(R.id.ivCheckDuckDuckGo)
-        val ivCheckPerplexity: ImageView = contentView.findViewById(R.id.ivCheckPerplexity)
-        val ivCheckWikipedia: ImageView = contentView.findViewById(R.id.ivCheckWikipedia)
+        val ivCheckYahoo: ImageView = contentView.findViewById(R.id.ivCheckYahoo)
+        val ivCheckYandex: ImageView = contentView.findViewById(R.id.ivCheckYandex)
+        val ivCheckStartpage: ImageView = contentView.findViewById(R.id.ivCheckStartpage)
 
         ivCheckGoogle.visibility = if (currentEngine == "google") View.VISIBLE else View.GONE
         ivCheckBing.visibility = if (currentEngine == "bing") View.VISIBLE else View.GONE
         ivCheckDuckDuckGo.visibility = if (currentEngine == "ddg") View.VISIBLE else View.GONE
-        ivCheckPerplexity.visibility = if (currentEngine == "perplexity") View.VISIBLE else View.GONE
-        ivCheckWikipedia.visibility = if (currentEngine == "wikipedia") View.VISIBLE else View.GONE
+        ivCheckYahoo.visibility = if (currentEngine == "yahoo") View.VISIBLE else View.GONE
+        ivCheckYandex.visibility = if (currentEngine == "yandex") View.VISIBLE else View.GONE
+        ivCheckStartpage.visibility = if (currentEngine == "startpage") View.VISIBLE else View.GONE
 
         // Search engine items
         bindEngineItem(
@@ -108,37 +107,22 @@ class SearchEngineMenuPopup(private val activity: MainActivity) {
         )
 
         bindEngineItem(
-            view = contentView.findViewById(R.id.llEnginePerplexity),
-            engineName = "Perplexity",
-            urlPattern = "https://www.perplexity.ai/search?q=[query]"
+            view = contentView.findViewById(R.id.llEngineYahoo),
+            engineName = "Yahoo!",
+            urlPattern = "https://search.yahoo.com/search?p=[query]"
         )
 
         bindEngineItem(
-            view = contentView.findViewById(R.id.llEngineWikipedia),
-            engineName = "Wikipedia (en)",
-            urlPattern = "https://en.wikipedia.org/wiki/Special:Search?search=[query]"
+            view = contentView.findViewById(R.id.llEngineYandex),
+            engineName = "Yandex",
+            urlPattern = "https://yandex.com/search/?text=[query]"
         )
 
-        // Shortcut 1: Bookmarks
-        bindMenuItem(contentView.findViewById(R.id.llShortcutBookmarks)) {
-            activity.showFavoritesDialog()
-        }
-
-        // Shortcut 2: Tabs
-        bindMenuItem(contentView.findViewById(R.id.llShortcutTabs)) {
-            activity.showTabsRowDialog()
-        }
-
-        // Shortcut 3: History
-        bindMenuItem(contentView.findViewById(R.id.llShortcutHistory)) {
-            activity.showHistoryActivity()
-        }
-
-        // Shortcut 4: Actions (opens ChromeMenuPopup)
-        bindMenuItem(contentView.findViewById(R.id.llShortcutActions)) {
-            val anchor = activity.findViewById<View>(R.id.ivLockIcon) ?: activity.vb.vActionBar
-            ChromeMenuPopup(activity).show(anchor)
-        }
+        bindEngineItem(
+            view = contentView.findViewById(R.id.llEngineStartpage),
+            engineName = "Startpage",
+            urlPattern = "https://www.startpage.com/sp/search?query=[query]"
+        )
 
         // Bottom: Search Settings
         bindMenuItem(contentView.findViewById(R.id.llSearchSettings)) {
@@ -166,16 +150,11 @@ class SearchEngineMenuPopup(private val activity: MainActivity) {
             activity.config.searchEngineURL.value = urlPattern
             activity.settingsModel.setSearchEngineURL(urlPattern)
 
-            // Update search bar icon immediately
+            // Update search bar icon immediately to reflect new chosen engine
             activity.vb.vActionBar.updateAddressBarIcon(enteredQuery)
 
-            if (enteredQuery.isNotEmpty()) {
-                // If user already typed query, execute search with this engine!
-                activity.search(enteredQuery)
-            } else {
-                Toast.makeText(activity, "$engineName selected", Toast.LENGTH_SHORT).show()
-                etUrl?.requestFocus()
-            }
+            Toast.makeText(activity, "$engineName selected", Toast.LENGTH_SHORT).show()
+            etUrl?.requestFocus()
         }
     }
 
@@ -193,8 +172,9 @@ class SearchEngineMenuPopup(private val activity: MainActivity) {
                 "google" -> contentView.findViewById<View>(R.id.llEngineGoogle)
                 "bing" -> contentView.findViewById<View>(R.id.llEngineBing)
                 "ddg" -> contentView.findViewById<View>(R.id.llEngineDuckDuckGo)
-                "perplexity" -> contentView.findViewById<View>(R.id.llEnginePerplexity)
-                "wikipedia" -> contentView.findViewById<View>(R.id.llEngineWikipedia)
+                "yahoo" -> contentView.findViewById<View>(R.id.llEngineYahoo)
+                "yandex" -> contentView.findViewById<View>(R.id.llEngineYandex)
+                "startpage" -> contentView.findViewById<View>(R.id.llEngineStartpage)
                 else -> contentView.findViewById<View>(R.id.llEngineGoogle)
             }
             viewToFocus?.requestFocus()

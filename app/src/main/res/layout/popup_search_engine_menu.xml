@@ -154,9 +154,9 @@
             android:contentDescription="@null" />
     </LinearLayout>
 
-    <!-- 4. Perplexity -->
+    <!-- 4. Yahoo! -->
     <LinearLayout
-        android:id="@+id/llEnginePerplexity"
+        android:id="@+id/llEngineYahoo"
         android:layout_width="match_parent"
         android:layout_height="38dp"
         android:orientation="horizontal"
@@ -170,25 +170,25 @@
         android:background="@drawable/menu_item_selector">
 
         <ImageView
-            android:id="@+id/ivLogoPerplexity"
+            android:id="@+id/ivLogoYahoo"
             android:layout_width="22dp"
             android:layout_height="22dp"
             android:scaleType="fitCenter"
-            android:src="@drawable/ic_logo_perplexity"
+            android:src="@drawable/ic_logo_yahoo"
             android:contentDescription="@null" />
 
         <TextView
-            android:id="@+id/tvTitlePerplexity"
+            android:id="@+id/tvTitleYahoo"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_marginStart="12dp"
-            android:text="Perplexity"
+            android:text="Yahoo!"
             android:textColor="#FFFFFF"
             android:textSize="13.5sp" />
 
         <ImageView
-            android:id="@+id/ivCheckPerplexity"
+            android:id="@+id/ivCheckYahoo"
             android:layout_width="16dp"
             android:layout_height="16dp"
             android:src="@drawable/ic_check_box_checked"
@@ -197,9 +197,9 @@
             android:contentDescription="@null" />
     </LinearLayout>
 
-    <!-- 5. Wikipedia (en) -->
+    <!-- 5. Yandex -->
     <LinearLayout
-        android:id="@+id/llEngineWikipedia"
+        android:id="@+id/llEngineYandex"
         android:layout_width="match_parent"
         android:layout_height="38dp"
         android:orientation="horizontal"
@@ -213,25 +213,25 @@
         android:background="@drawable/menu_item_selector">
 
         <ImageView
-            android:id="@+id/ivLogoWikipedia"
+            android:id="@+id/ivLogoYandex"
             android:layout_width="22dp"
             android:layout_height="22dp"
             android:scaleType="fitCenter"
-            android:src="@drawable/ic_logo_wikipedia"
+            android:src="@drawable/ic_logo_yandex"
             android:contentDescription="@null" />
 
         <TextView
-            android:id="@+id/tvTitleWikipedia"
+            android:id="@+id/tvTitleYandex"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_marginStart="12dp"
-            android:text="Wikipedia (en)"
+            android:text="Yandex"
             android:textColor="#FFFFFF"
             android:textSize="13.5sp" />
 
         <ImageView
-            android:id="@+id/ivCheckWikipedia"
+            android:id="@+id/ivCheckYandex"
             android:layout_width="16dp"
             android:layout_height="16dp"
             android:src="@drawable/ic_check_box_checked"
@@ -240,19 +240,9 @@
             android:contentDescription="@null" />
     </LinearLayout>
 
-    <!-- Divider -->
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="6dp"
-        android:layout_marginBottom="6dp"
-        android:layout_marginStart="12dp"
-        android:layout_marginEnd="12dp"
-        android:background="#383842" />
-
-    <!-- Shortcuts Section: Bookmarks -->
+    <!-- 6. Startpage -->
     <LinearLayout
-        android:id="@+id/llShortcutBookmarks"
+        android:id="@+id/llEngineStartpage"
         android:layout_width="match_parent"
         android:layout_height="38dp"
         android:orientation="horizontal"
@@ -266,127 +256,31 @@
         android:background="@drawable/menu_item_selector">
 
         <ImageView
-            android:id="@+id/ivIconBookmarks"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:id="@+id/ivLogoStartpage"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
             android:scaleType="fitCenter"
-            android:src="@drawable/ic_star_filled_gold"
-            android:tint="#F4B400"
+            android:src="@drawable/ic_logo_startpage"
             android:contentDescription="@null" />
 
         <TextView
-            android:id="@+id/tvTitleBookmarks"
+            android:id="@+id/tvTitleStartpage"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_marginStart="14dp"
-            android:text="@string/bookmarks"
-            android:textColor="#E4E4E8"
-            android:textSize="13sp" />
-    </LinearLayout>
-
-    <!-- Shortcuts Section: Tabs -->
-    <LinearLayout
-        android:id="@+id/llShortcutTabs"
-        android:layout_width="match_parent"
-        android:layout_height="38dp"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:paddingStart="14dp"
-        android:paddingEnd="14dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginEnd="4dp"
-        android:focusable="true"
-        android:clickable="true"
-        android:background="@drawable/menu_item_selector">
+            android:layout_marginStart="12dp"
+            android:text="Startpage"
+            android:textColor="#FFFFFF"
+            android:textSize="13.5sp" />
 
         <ImageView
-            android:id="@+id/ivIconTabs"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/ic_menu_recent_tabs"
-            android:tint="#9AA0A6"
+            android:id="@+id/ivCheckStartpage"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:src="@drawable/ic_check_box_checked"
+            android:tint="#0494F4"
+            android:visibility="gone"
             android:contentDescription="@null" />
-
-        <TextView
-            android:id="@+id/tvTitleTabs"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginStart="14dp"
-            android:text="@string/tabs"
-            android:textColor="#E4E4E8"
-            android:textSize="13sp" />
-    </LinearLayout>
-
-    <!-- Shortcuts Section: History -->
-    <LinearLayout
-        android:id="@+id/llShortcutHistory"
-        android:layout_width="match_parent"
-        android:layout_height="38dp"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:paddingStart="14dp"
-        android:paddingEnd="14dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginEnd="4dp"
-        android:focusable="true"
-        android:clickable="true"
-        android:background="@drawable/menu_item_selector">
-
-        <ImageView
-            android:id="@+id/ivIconHistory"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/ic_history_grey_900_36dp"
-            android:tint="#9AA0A6"
-            android:contentDescription="@null" />
-
-        <TextView
-            android:id="@+id/tvTitleHistory"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginStart="14dp"
-            android:text="@string/history"
-            android:textColor="#E4E4E8"
-            android:textSize="13sp" />
-    </LinearLayout>
-
-    <!-- Shortcuts Section: Actions -->
-    <LinearLayout
-        android:id="@+id/llShortcutActions"
-        android:layout_width="match_parent"
-        android:layout_height="38dp"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:paddingStart="14dp"
-        android:paddingEnd="14dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginEnd="4dp"
-        android:focusable="true"
-        android:clickable="true"
-        android:background="@drawable/menu_item_selector">
-
-        <ImageView
-            android:id="@+id/ivIconActions"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/ic_bolt_action"
-            android:contentDescription="@null" />
-
-        <TextView
-            android:id="@+id/tvTitleActions"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginStart="14dp"
-            android:text="@string/menu_actions"
-            android:textColor="#E4E4E8"
-            android:textSize="13sp" />
     </LinearLayout>
 
     <!-- Divider -->

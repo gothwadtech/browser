@@ -1,4 +1,4 @@
-package com.gothwad.tvbrowser.activity.main.view.home
+package com.gothwad.browser.activity.main.view.home
 
 import android.app.AlertDialog
 import android.content.Context
@@ -19,10 +19,10 @@ import android.widget.ScrollView
 import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.gothwad.tvbrowser.R
-import com.gothwad.tvbrowser.activity.main.MainActivity
-import com.gothwad.tvbrowser.activity.main.toggleIncognitoMode
-import com.gothwad.tvbrowser.utils.activity
+import com.gothwad.browser.R
+import com.gothwad.browser.activity.main.MainActivity
+import com.gothwad.browser.activity.main.toggleIncognitoMode
+import com.gothwad.browser.utils.activity
 import org.json.JSONArray
 import org.json.JSONObject
 

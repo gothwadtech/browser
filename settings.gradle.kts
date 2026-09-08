@@ -18,6 +18,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "tvbrowser"
+rootProject.name = "Gothwad Browser"
 include(":app")
 include(":app:common")

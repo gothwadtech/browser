@@ -1,4 +1,4 @@
-package com.gothwad.tvbrowser.activity.main
+package com.gothwad.browser.activity.main
 
 import android.content.ClipData
 import android.content.ClipboardManager
@@ -9,11 +9,11 @@ import android.view.View
 import android.widget.FrameLayout
 import android.widget.PopupMenu
 import android.widget.Toast
-import com.gothwad.tvbrowser.R
-import com.gothwad.tvbrowser.model.WebTabState
-import com.gothwad.tvbrowser.notes.clipboard.ClipboardRepository
-import com.gothwad.tvbrowser.webengine.WebEngineWindowProviderCallback
-import com.gothwad.tvbrowser.widgets.cursor.CursorDrawerDelegate
+import com.gothwad.browser.R
+import com.gothwad.browser.model.WebTabState
+import com.gothwad.browser.notes.clipboard.ClipboardRepository
+import com.gothwad.browser.webengine.WebEngineWindowProviderCallback
+import com.gothwad.browser.widgets.cursor.CursorDrawerDelegate
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

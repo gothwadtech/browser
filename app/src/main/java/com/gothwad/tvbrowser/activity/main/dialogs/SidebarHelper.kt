@@ -1,8 +1,8 @@
-package com.gothwad.tvbrowser.activity.main.dialogs
+package com.gothwad.browser.activity.main.dialogs
 
 import android.app.Activity
 import android.view.View
-import com.gothwad.tvbrowser.R
+import com.gothwad.browser.R
 
 object SidebarHelper {
     /**

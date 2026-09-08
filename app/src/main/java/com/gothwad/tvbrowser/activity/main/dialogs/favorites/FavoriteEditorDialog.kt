@@ -1,4 +1,4 @@
-package com.gothwad.tvbrowser.activity.main.dialogs.favorites
+package com.gothwad.browser.activity.main.dialogs.favorites
 
 import android.app.Dialog
 import android.content.Context
@@ -8,8 +8,8 @@ import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
 
-import com.gothwad.tvbrowser.R
-import com.gothwad.tvbrowser.model.FavoriteItem
+import com.gothwad.browser.R
+import com.gothwad.browser.model.FavoriteItem
 
 /**
  * Created by PDT on 13.09.2016.

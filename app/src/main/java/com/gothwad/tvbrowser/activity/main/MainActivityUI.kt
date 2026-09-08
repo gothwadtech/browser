@@ -1,4 +1,4 @@
-package com.gothwad.tvbrowser.activity.main
+package com.gothwad.browser.activity.main
 
 import android.content.Intent
 import android.content.res.ColorStateList
@@ -12,23 +12,23 @@ import android.view.animation.DecelerateInterpolator
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
-import com.gothwad.tvbrowser.Config
-import com.gothwad.tvbrowser.R
-import com.gothwad.tvbrowser.activity.main.dialogs.BrowserSidebarPopup
-import com.gothwad.tvbrowser.activity.main.dialogs.ClipboardSidebarPopup
-import com.gothwad.tvbrowser.activity.main.dialogs.DownloadsSidebarPopup
-import com.gothwad.tvbrowser.activity.main.dialogs.FavoritesSidebarPopup
-import com.gothwad.tvbrowser.activity.main.dialogs.FileManagerSidebarPopup
-import com.gothwad.tvbrowser.activity.main.dialogs.HistorySidebarPopup
-import com.gothwad.tvbrowser.activity.main.dialogs.NotesSidebarPopup
-import com.gothwad.tvbrowser.activity.main.dialogs.ShortcutDialog
-import com.gothwad.tvbrowser.activity.main.dialogs.favorites.FavoriteEditorDialog
-import com.gothwad.tvbrowser.model.FavoriteItem
-import com.gothwad.tvbrowser.settings.SettingsDialog
-import com.gothwad.tvbrowser.singleton.shortcuts.Shortcut
-import com.gothwad.tvbrowser.utils.Utils
-import com.gothwad.tvbrowser.utils.VoiceSearchHelper
-import com.gothwad.tvbrowser.webengine.WebEngineFactory
+import com.gothwad.browser.Config
+import com.gothwad.browser.R
+import com.gothwad.browser.activity.main.dialogs.BrowserSidebarPopup
+import com.gothwad.browser.activity.main.dialogs.ClipboardSidebarPopup
+import com.gothwad.browser.activity.main.dialogs.DownloadsSidebarPopup
+import com.gothwad.browser.activity.main.dialogs.FavoritesSidebarPopup
+import com.gothwad.browser.activity.main.dialogs.FileManagerSidebarPopup
+import com.gothwad.browser.activity.main.dialogs.HistorySidebarPopup
+import com.gothwad.browser.activity.main.dialogs.NotesSidebarPopup
+import com.gothwad.browser.activity.main.dialogs.ShortcutDialog
+import com.gothwad.browser.activity.main.dialogs.favorites.FavoriteEditorDialog
+import com.gothwad.browser.model.FavoriteItem
+import com.gothwad.browser.settings.SettingsDialog
+import com.gothwad.browser.singleton.shortcuts.Shortcut
+import com.gothwad.browser.utils.Utils
+import com.gothwad.browser.utils.VoiceSearchHelper
+import com.gothwad.browser.webengine.WebEngineFactory
 
 internal fun MainActivity.showMenuOverlay() {
     if (isFullscreen) return

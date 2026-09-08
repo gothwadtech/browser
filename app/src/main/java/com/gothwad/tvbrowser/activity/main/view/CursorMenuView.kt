@@ -1,4 +1,4 @@
-package com.gothwad.tvbrowser.activity.main.view
+package com.gothwad.browser.activity.main.view
 
 import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
@@ -14,14 +14,14 @@ import android.view.animation.AccelerateInterpolator
 import android.view.animation.OvershootInterpolator
 import android.widget.CheckBox
 import android.widget.FrameLayout
-import com.gothwad.tvbrowser.AppContext
-import com.gothwad.tvbrowser.R
-import com.gothwad.tvbrowser.databinding.ViewCursorMenuBinding
-import com.gothwad.tvbrowser.utils.dip2px
-import com.gothwad.tvbrowser.model.WebTabState
-import com.gothwad.tvbrowser.webengine.WebEngineWindowProviderCallback
-import com.gothwad.tvbrowser.widgets.cursor.CursorDrawerDelegate
-import com.gothwad.tvbrowser.utils.BackNavigationEventsAdapter
+import com.gothwad.browser.AppContext
+import com.gothwad.browser.R
+import com.gothwad.browser.databinding.ViewCursorMenuBinding
+import com.gothwad.browser.utils.dip2px
+import com.gothwad.browser.model.WebTabState
+import com.gothwad.browser.webengine.WebEngineWindowProviderCallback
+import com.gothwad.browser.widgets.cursor.CursorDrawerDelegate
+import com.gothwad.browser.utils.BackNavigationEventsAdapter
 
 class CursorMenuView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0

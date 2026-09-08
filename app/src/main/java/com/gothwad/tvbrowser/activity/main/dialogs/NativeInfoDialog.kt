@@ -1,4 +1,4 @@
-package com.gothwad.tvbrowser.activity.main.dialogs
+package com.gothwad.browser.activity.main.dialogs
 
 import android.app.Dialog
 import android.content.Context
@@ -12,7 +12,7 @@ import android.widget.ImageView
 import android.widget.ScrollView
 import android.widget.TextView
 import androidx.core.net.toUri
-import com.gothwad.tvbrowser.R
+import com.gothwad.browser.R
 
 class NativeInfoDialog(
     context: Context,

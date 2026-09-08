@@ -1,4 +1,4 @@
-package com.gothwad.tvbrowser.activity.main.dialogs
+package com.gothwad.browser.activity.main.dialogs
 
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -18,9 +18,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.gothwad.tvbrowser.R
-import com.gothwad.tvbrowser.activity.main.MainActivity
-import com.gothwad.tvbrowser.model.WebTabState
+import com.gothwad.browser.R
+import com.gothwad.browser.activity.main.MainActivity
+import com.gothwad.browser.model.WebTabState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -238,7 +238,7 @@ class TabsSidebarAdapter(
         val scope = (holder.itemView.context as? AppCompatActivity)?.lifecycleScope
         scope?.launch(Dispatchers.Main) {
             try {
-                val favicon = com.gothwad.tvbrowser.singleton.FaviconsPool.get(tab.url)
+                val favicon = com.gothwad.browser.singleton.FaviconsPool.get(tab.url)
                 if (holder.itemView.tag == tab && favicon != null) {
                     holder.ivFavicon.setImageBitmap(favicon)
                 }

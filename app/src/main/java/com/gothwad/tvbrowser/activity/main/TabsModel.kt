@@ -1,19 +1,19 @@
-package com.gothwad.tvbrowser.activity.main
+package com.gothwad.browser.activity.main
 
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
-import com.gothwad.tvbrowser.AppContext
-import com.gothwad.tvbrowser.BrowserApp
-import com.gothwad.tvbrowser.Config
-import com.gothwad.tvbrowser.model.HostConfig
-import com.gothwad.tvbrowser.model.WebTabState
-import com.gothwad.tvbrowser.singleton.AppDatabase
-import com.gothwad.tvbrowser.utils.Utils
-import com.gothwad.tvbrowser.utils.activemodel.ActiveModel
-import com.gothwad.tvbrowser.utils.observable.ObservableList
-import com.gothwad.tvbrowser.utils.observable.ObservableValue
-import com.gothwad.tvbrowser.webengine.WebEngineWindowProviderCallback
+import com.gothwad.browser.AppContext
+import com.gothwad.browser.BrowserApp
+import com.gothwad.browser.Config
+import com.gothwad.browser.model.HostConfig
+import com.gothwad.browser.model.WebTabState
+import com.gothwad.browser.singleton.AppDatabase
+import com.gothwad.browser.utils.Utils
+import com.gothwad.browser.utils.activemodel.ActiveModel
+import com.gothwad.browser.utils.observable.ObservableList
+import com.gothwad.browser.utils.observable.ObservableValue
+import com.gothwad.browser.webengine.WebEngineWindowProviderCallback
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -206,7 +206,7 @@ class TabsModel : ActiveModel() {
         if (hostConfig == null || hostConfig.hostName != currentHostName) {
             hostConfig = hostConfigCache[currentHostName]
             if (hostConfig == null) {
-                val db = com.gothwad.tvbrowser.singleton.AppDatabase.db.hostsDao()
+                val db = com.gothwad.browser.singleton.AppDatabase.db.hostsDao()
                 hostConfig = db.findByHostName(currentHostName)
                 if (hostConfig == null && createIfNotFound) {
                     hostConfig = HostConfig(currentHostName)

@@ -1,4 +1,4 @@
-package com.gothwad.tvbrowser.activity.main.dialogs
+package com.gothwad.browser.activity.main.dialogs
 
 import android.content.ActivityNotFoundException
 import android.content.Intent
@@ -23,13 +23,13 @@ import android.widget.Toast
 import androidx.core.content.FileProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.gothwad.tvbrowser.BuildConfig
-import com.gothwad.tvbrowser.R
-import com.gothwad.tvbrowser.activity.downloads.ActiveDownloadsModel
-import com.gothwad.tvbrowser.activity.main.MainActivity
-import com.gothwad.tvbrowser.model.Download
-import com.gothwad.tvbrowser.singleton.AppDatabase
-import com.gothwad.tvbrowser.utils.activemodel.ActiveModelsRepository
+import com.gothwad.browser.BuildConfig
+import com.gothwad.browser.R
+import com.gothwad.browser.activity.downloads.ActiveDownloadsModel
+import com.gothwad.browser.activity.main.MainActivity
+import com.gothwad.browser.model.Download
+import com.gothwad.browser.singleton.AppDatabase
+import com.gothwad.browser.utils.activemodel.ActiveModelsRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

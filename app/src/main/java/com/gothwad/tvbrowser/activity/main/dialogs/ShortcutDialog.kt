@@ -1,4 +1,4 @@
-package com.gothwad.tvbrowser.activity.main.dialogs
+package com.gothwad.browser.activity.main.dialogs
 
 import android.app.Dialog
 import android.content.Context
@@ -8,10 +8,10 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 
-import com.gothwad.tvbrowser.R
-import com.gothwad.tvbrowser.singleton.shortcuts.Shortcut
-import com.gothwad.tvbrowser.singleton.shortcuts.ShortcutMgr
-import com.gothwad.tvbrowser.utils.NavigationReservedShortcutKeyCodes
+import com.gothwad.browser.R
+import com.gothwad.browser.singleton.shortcuts.Shortcut
+import com.gothwad.browser.singleton.shortcuts.ShortcutMgr
+import com.gothwad.browser.utils.NavigationReservedShortcutKeyCodes
 
 /**
  * Created by PDT on 06.08.2017.
