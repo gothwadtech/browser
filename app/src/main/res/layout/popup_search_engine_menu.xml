@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/llSearchEngineMenuRoot"
+    android:layout_width="250dp"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/bg_search_engine_popup"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp"
+    android:elevation="16dp"
+    android:clipToPadding="false">
+
+    <!-- Header label: "This time search with:" -->
+    <TextView
+        android:id="@+id/tvSearchWithTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingTop="4dp"
+        android:paddingBottom="6dp"
+        android:text="@string/this_time_search_with"
+        android:textColor="#9E9EA8"
+        android:textSize="11.5sp"
+        android:textStyle="bold" />
+
+    <!-- 1. Google -->
+    <LinearLayout
+        android:id="@+id/llEngineGoogle"
+        android:layout_width="match_parent"
+        android:layout_height="38dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingStart="14dp"
+        android:paddingEnd="14dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="4dp"
+        android:focusable="true"
+        android:clickable="true"
+        android:background="@drawable/menu_item_selector">
+
+        <ImageView
+            android:id="@+id/ivLogoGoogle"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_logo_google"
+            android:contentDescription="@null" />
+
+        <TextView
+            android:id="@+id/tvTitleGoogle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="12dp"
+            android:text="Google"
+            android:textColor="#FFFFFF"
+            android:textSize="13.5sp" />
+
+        <ImageView
+            android:id="@+id/ivCheckGoogle"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:src="@drawable/ic_check_box_checked"
+            android:tint="#0494F4"
+            android:visibility="gone"
+            android:contentDescription="@null" />
+    </LinearLayout>
+
+    <!-- 2. Bing -->
+    <LinearLayout
+        android:id="@+id/llEngineBing"
+        android:layout_width="match_parent"
+        android:layout_height="38dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingStart="14dp"
+        android:paddingEnd="14dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="4dp"
+        android:focusable="true"
+        android:clickable="true"
+        android:background="@drawable/menu_item_selector">
+
+        <ImageView
+            android:id="@+id/ivLogoBing"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_logo_bing"
+            android:contentDescription="@null" />
+
+        <TextView
+            android:id="@+id/tvTitleBing"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="12dp"
+            android:text="Bing"
+            android:textColor="#FFFFFF"
+            android:textSize="13.5sp" />
+
+        <ImageView
+            android:id="@+id/ivCheckBing"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:src="@drawable/ic_check_box_checked"
+            android:tint="#0494F4"
+            android:visibility="gone"
+            android:contentDescription="@null" />
+    </LinearLayout>
+
+    <!-- 3. DuckDuckGo -->
+    <LinearLayout
+        android:id="@+id/llEngineDuckDuckGo"
+        android:layout_width="match_parent"
+        android:layout_height="38dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingStart="14dp"
+        android:paddingEnd="14dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="4dp"
+        android:focusable="true"
+        android:clickable="true"
+        android:background="@drawable/menu_item_selector">
+
+        <ImageView
+            android:id="@+id/ivLogoDuckDuckGo"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_logo_duckduckgo"
+            android:contentDescription="@null" />
+
+        <TextView
+            android:id="@+id/tvTitleDuckDuckGo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="12dp"
+            android:text="DuckDuckGo"
+            android:textColor="#FFFFFF"
+            android:textSize="13.5sp" />
+
+        <ImageView
+            android:id="@+id/ivCheckDuckDuckGo"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:src="@drawable/ic_check_box_checked"
+            android:tint="#0494F4"
+            android:visibility="gone"
+            android:contentDescription="@null" />
+    </LinearLayout>
+
+    <!-- 4. Yahoo! -->
+    <LinearLayout
+        android:id="@+id/llEngineYahoo"
+        android:layout_width="match_parent"
+        android:layout_height="38dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingStart="14dp"
+        android:paddingEnd="14dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="4dp"
+        android:focusable="true"
+        android:clickable="true"
+        android:background="@drawable/menu_item_selector">
+
+        <ImageView
+            android:id="@+id/ivLogoYahoo"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_logo_yahoo"
+            android:contentDescription="@null" />
+
+        <TextView
+            android:id="@+id/tvTitleYahoo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="12dp"
+            android:text="Yahoo!"
+            android:textColor="#FFFFFF"
+            android:textSize="13.5sp" />
+
+        <ImageView
+            android:id="@+id/ivCheckYahoo"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:src="@drawable/ic_check_box_checked"
+            android:tint="#0494F4"
+            android:visibility="gone"
+            android:contentDescription="@null" />
+    </LinearLayout>
+
+    <!-- 5. Yandex -->
+    <LinearLayout
+        android:id="@+id/llEngineYandex"
+        android:layout_width="match_parent"
+        android:layout_height="38dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingStart="14dp"
+        android:paddingEnd="14dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="4dp"
+        android:focusable="true"
+        android:clickable="true"
+        android:background="@drawable/menu_item_selector">
+
+        <ImageView
+            android:id="@+id/ivLogoYandex"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_logo_yandex"
+            android:contentDescription="@null" />
+
+        <TextView
+            android:id="@+id/tvTitleYandex"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="12dp"
+            android:text="Yandex"
+            android:textColor="#FFFFFF"
+            android:textSize="13.5sp" />
+
+        <ImageView
+            android:id="@+id/ivCheckYandex"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:src="@drawable/ic_check_box_checked"
+            android:tint="#0494F4"
+            android:visibility="gone"
+            android:contentDescription="@null" />
+    </LinearLayout>
+
+    <!-- 6. Startpage -->
+    <LinearLayout
+        android:id="@+id/llEngineStartpage"
+        android:layout_width="match_parent"
+        android:layout_height="38dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingStart="14dp"
+        android:paddingEnd="14dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="4dp"
+        android:focusable="true"
+        android:clickable="true"
+        android:background="@drawable/menu_item_selector">
+
+        <ImageView
+            android:id="@+id/ivLogoStartpage"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_logo_startpage"
+            android:contentDescription="@null" />
+
+        <TextView
+            android:id="@+id/tvTitleStartpage"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="12dp"
+            android:text="Startpage"
+            android:textColor="#FFFFFF"
+            android:textSize="13.5sp" />
+
+        <ImageView
+            android:id="@+id/ivCheckStartpage"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:src="@drawable/ic_check_box_checked"
+            android:tint="#0494F4"
+            android:visibility="gone"
+            android:contentDescription="@null" />
+    </LinearLayout>
+
+    <!-- Divider -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="6dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        android:background="#383842" />
+
+    <!-- Bottom: Search Settings -->
+    <LinearLayout
+        android:id="@+id/llSearchSettings"
+        android:layout_width="match_parent"
+        android:layout_height="38dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingStart="14dp"
+        android:paddingEnd="14dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="4dp"
+        android:focusable="true"
+        android:clickable="true"
+        android:background="@drawable/menu_item_selector">
+
+        <ImageView
+            android:id="@+id/ivIconSettings"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_settings_browser"
+            android:tint="#9AA0A6"
+            android:contentDescription="@null" />
+
+        <TextView
+            android:id="@+id/tvTitleSettings"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="14dp"
+            android:text="@string/search_settings"
+            android:textColor="#E4E4E8"
+            android:textSize="13sp" />
+    </LinearLayout>
+
+</LinearLayout>
