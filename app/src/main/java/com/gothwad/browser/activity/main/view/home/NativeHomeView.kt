@@ -392,11 +392,13 @@ class NativeHomeView @JvmOverloads constructor(
 
         // 5-Column Grid with full-span Section Headers
         val gridLayoutManager = GridLayoutManager(context, 5, RecyclerView.VERTICAL, false)
-        gridLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+        val lookup = object : GridLayoutManager.SpanSizeLookup() {
             override fun getSpanSize(position: Int): Int {
                 return if (position in bookmarkItems.indices && bookmarkItems[position].isHeader) 5 else 1
             }
         }
+        lookup.isSpanIndexCacheEnabled = true
+        gridLayoutManager.spanSizeLookup = lookup
 
         rvBookmarks.layoutManager = gridLayoutManager
         rvBookmarks.setHasFixedSize(false)
@@ -558,21 +560,28 @@ class NativeHomeView @JvmOverloads constructor(
         return rvBookmarks.getChildAdapterPosition(itemView)
     }
 
+    private fun getSpanIndex(position: Int): Int {
+        val glm = rvBookmarks.layoutManager as? GridLayoutManager ?: return 0
+        return if (position in bookmarkItems.indices) {
+            glm.spanSizeLookup.getSpanIndex(position, 5)
+        } else {
+            0
+        }
+    }
+
+    private fun getSpanGroupIndex(position: Int): Int {
+        val glm = rvBookmarks.layoutManager as? GridLayoutManager ?: return 0
+        return if (position in bookmarkItems.indices) {
+            glm.spanSizeLookup.getSpanGroupIndex(position, 5)
+        } else {
+            0
+        }
+    }
+
     fun getFocusedShortcutColumn(): Int {
         val pos = getFocusedShortcutPosition()
         if (pos < 0) return 0
-        // Find column within current row (accounting for section headers which span 5)
-        var col = 0
-        for (i in 0..pos) {
-            if (i >= bookmarkItems.size) break
-            if (bookmarkItems[i].isHeader) {
-                col = 0
-            } else {
-                if (i == pos) return col % 5
-                col = (col + 1) % 5
-            }
-        }
-        return col % 5
+        return getSpanIndex(pos)
     }
 
     fun navigateFocus(keyCode: Int): Boolean {
@@ -615,40 +624,73 @@ class NativeHomeView @JvmOverloads constructor(
                 return false
             }
             KeyEvent.KEYCODE_DPAD_UP -> {
-                // Look for item 5 columns back in the grid layout (1 row up)
-                var targetPos = currentPos - 5
-                while (targetPos >= 0 && bookmarkItems[targetPos].isHeader) {
-                    targetPos--
-                }
-                if (targetPos >= 0 && !bookmarkItems[targetPos].isHeader) {
-                    focusPosition(targetPos)
-                    return true
-                }
-                // No item 1 row above -> return false to transition focus to toolbar header
-                return false
-            }
-            KeyEvent.KEYCODE_DPAD_DOWN -> {
-                // Move 1 row down (5 items forward in grid), skipping headers
-                var targetPos = currentPos + 5
-                if (targetPos >= bookmarkItems.size) {
-                    targetPos = bookmarkItems.size - 1
-                }
-                while (targetPos < bookmarkItems.size && bookmarkItems[targetPos].isHeader) {
-                    targetPos++
-                }
-                if (targetPos < bookmarkItems.size && !bookmarkItems[targetPos].isHeader && targetPos != currentPos) {
-                    focusPosition(targetPos)
-                    return true
-                } else if (currentPos < bookmarkItems.size - 1) {
-                    var nextPos = currentPos + 1
-                    while (nextPos < bookmarkItems.size && bookmarkItems[nextPos].isHeader) {
-                        nextPos++
+                val currentRow = getSpanGroupIndex(currentPos)
+                val currentCol = getSpanIndex(currentPos)
+
+                // Find the nearest row above that contains focusable (non-header) items
+                var targetRow = -1
+                for (pos in currentPos - 1 downTo 0) {
+                    if (pos < bookmarkItems.size && !bookmarkItems[pos].isHeader) {
+                        val row = getSpanGroupIndex(pos)
+                        if (row < currentRow) {
+                            targetRow = row
+                            break
+                        }
                     }
-                    if (nextPos < bookmarkItems.size && !bookmarkItems[nextPos].isHeader) {
-                        focusPosition(nextPos)
+                }
+
+                if (targetRow >= 0) {
+                    val candidatePositions = mutableListOf<Int>()
+                    for (pos in 0 until bookmarkItems.size) {
+                        if (!bookmarkItems[pos].isHeader && getSpanGroupIndex(pos) == targetRow) {
+                            candidatePositions.add(pos)
+                        }
+                    }
+                    val bestPos = candidatePositions.minByOrNull { pos ->
+                        Math.abs(getSpanIndex(pos) - currentCol)
+                    }
+                    if (bestPos != null) {
+                        focusPosition(bestPos)
                         return true
                     }
                 }
+
+                // No row above -> return false so MainActivityDpad transitions focus up to toolbar
+                return false
+            }
+            KeyEvent.KEYCODE_DPAD_DOWN -> {
+                val currentRow = getSpanGroupIndex(currentPos)
+                val currentCol = getSpanIndex(currentPos)
+
+                // Find the nearest row below that contains focusable (non-header) items
+                var targetRow = -1
+                for (pos in currentPos + 1 until bookmarkItems.size) {
+                    if (!bookmarkItems[pos].isHeader) {
+                        val row = getSpanGroupIndex(pos)
+                        if (row > currentRow) {
+                            targetRow = row
+                            break
+                        }
+                    }
+                }
+
+                if (targetRow >= 0) {
+                    val candidatePositions = mutableListOf<Int>()
+                    for (pos in 0 until bookmarkItems.size) {
+                        if (!bookmarkItems[pos].isHeader && getSpanGroupIndex(pos) == targetRow) {
+                            candidatePositions.add(pos)
+                        }
+                    }
+                    val bestPos = candidatePositions.minByOrNull { pos ->
+                        Math.abs(getSpanIndex(pos) - currentCol)
+                    }
+                    if (bestPos != null) {
+                        focusPosition(bestPos)
+                        return true
+                    }
+                }
+
+                // Bottom-most row reached, consume event
                 return true
             }
         }
@@ -658,14 +700,21 @@ class NativeHomeView @JvmOverloads constructor(
     fun focusPosition(pos: Int) {
         if (pos !in bookmarkItems.indices) return
         if (bookmarkItems[pos].isHeader) return
-        rvBookmarks.smoothScrollToPosition(pos)
         val view = rvBookmarks.layoutManager?.findViewByPosition(pos)
         if (view != null) {
             view.requestFocus()
         } else {
-            rvBookmarks.postDelayed({
-                rvBookmarks.layoutManager?.findViewByPosition(pos)?.requestFocus()
-            }, 50)
+            rvBookmarks.scrollToPosition(pos)
+            rvBookmarks.post {
+                val targetView = rvBookmarks.layoutManager?.findViewByPosition(pos)
+                if (targetView != null) {
+                    targetView.requestFocus()
+                } else {
+                    rvBookmarks.postDelayed({
+                        rvBookmarks.layoutManager?.findViewByPosition(pos)?.requestFocus()
+                    }, 50)
+                }
+            }
         }
     }
 
@@ -676,14 +725,29 @@ class NativeHomeView @JvmOverloads constructor(
             btnExitIncognito.requestFocus()
             return
         }
-        val count = bookmarkItems.size
-        if (count <= 1) return
-        var targetPos = (1 + col).coerceIn(1, count - 1)
-        if (targetPos < bookmarkItems.size && bookmarkItems[targetPos].isHeader) {
-            targetPos = if (targetPos + 1 < bookmarkItems.size) targetPos + 1 else targetPos - 1
+        if (bookmarkItems.isEmpty()) return
+
+        var firstRow = -1
+        for (pos in 0 until bookmarkItems.size) {
+            if (!bookmarkItems[pos].isHeader) {
+                firstRow = getSpanGroupIndex(pos)
+                break
+            }
         }
-        targetPos = targetPos.coerceIn(1, count - 1)
-        focusPosition(targetPos)
+        if (firstRow < 0) return
+
+        val candidatePositions = mutableListOf<Int>()
+        for (pos in 0 until bookmarkItems.size) {
+            if (!bookmarkItems[pos].isHeader && getSpanGroupIndex(pos) == firstRow) {
+                candidatePositions.add(pos)
+            }
+        }
+        val bestPos = candidatePositions.minByOrNull { pos ->
+            Math.abs(getSpanIndex(pos) - col)
+        }
+        if (bestPos != null) {
+            focusPosition(bestPos)
+        }
     }
 
     fun catchFocus() {
