@@ -61,4 +61,18 @@ object SidebarHelper {
         }
         return dynamicWidth
     }
+
+    /**
+     * Calculates comfortable horizontal width for Chrome-style History panel.
+     * Ensures generous horizontal space for timestamps, favicons, titles, and actions.
+     */
+    fun calculateHistorySidebarWidth(activity: Activity): Int {
+        val decorView = activity.window.decorView
+        val screenWidth = if (decorView.width > 0) decorView.width else activity.resources.displayMetrics.widthPixels
+        val density = activity.resources.displayMetrics.density
+        val minWidth = (360 * density).toInt()
+        val idealWidth = (screenWidth * 0.38f).toInt()
+        val maxWidth = (screenWidth * 0.55f).toInt()
+        return idealWidth.coerceIn(minWidth.coerceAtMost(screenWidth), maxWidth.coerceAtLeast(minWidth).coerceAtMost(screenWidth))
+    }
 }

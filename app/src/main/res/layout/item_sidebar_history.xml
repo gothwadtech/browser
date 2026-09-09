@@ -4,23 +4,61 @@
     android:id="@+id/llHistoryItemRoot"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="6dp"
-    android:background="@drawable/bg_card_sleek"
+    android:layout_marginStart="2dp"
+    android:layout_marginEnd="2dp"
+    android:layout_marginTop="3dp"
+    android:layout_marginBottom="3dp"
+    android:background="@drawable/bg_chrome_history_card"
     android:clickable="true"
     android:focusable="true"
     android:gravity="center_vertical"
     android:orientation="horizontal"
-    android:padding="10dp">
+    android:paddingStart="10dp"
+    android:paddingTop="8dp"
+    android:paddingEnd="10dp"
+    android:paddingBottom="8dp">
 
-    <ImageView
-        android:id="@+id/ivHistoryFavicon"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
+    <!-- Multiselect CheckBox -->
+    <CheckBox
+        android:id="@+id/cbHistorySelect"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:buttonTint="#38BDF8"
+        android:clickable="false"
+        android:focusable="false"
+        android:visibility="gone" />
+
+    <!-- Timestamp (e.g. 10:45 AM) -->
+    <TextView
+        android:id="@+id/tvHistoryTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginEnd="10dp"
-        android:src="@drawable/ic_tab_default_favicon"
-        android:contentDescription="@null" />
+        android:textColor="#64748B"
+        android:textSize="11sp"
+        android:textStyle="bold"
+        tools:text="10:45 AM" />
 
+    <!-- Favicon Container -->
+    <FrameLayout
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/tv_shortcut_icon_bg">
+
+        <ImageView
+            android:id="@+id/ivHistoryFavicon"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_gravity="center"
+            android:contentDescription="@null"
+            android:src="@drawable/ic_tab_default_favicon" />
+    </FrameLayout>
+
+    <!-- Title and URL -->
     <LinearLayout
+        android:id="@+id/llHistoryText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -32,10 +70,10 @@
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:maxLines="1"
-            android:text="Google Search"
-            android:textColor="@color/day_night_text_color_contrast"
+            android:textColor="#FFFFFF"
             android:textSize="13sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            tools:text="Google Search" />
 
         <TextView
             android:id="@+id/tvHistoryUrl"
@@ -44,30 +82,36 @@
             android:layout_marginTop="2dp"
             android:ellipsize="end"
             android:maxLines="1"
-            android:text="https://www.google.com"
             android:textColor="#94A3B8"
-            android:textSize="11sp" />
-
-        <TextView
-            android:id="@+id/tvHistoryTime"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:text="Today, 10:45 AM"
-            android:textColor="#64748B"
-            android:textSize="10sp" />
+            android:textSize="11sp"
+            tools:text="https://www.google.com" />
     </LinearLayout>
 
+    <!-- Quick Delete Button -->
     <ImageButton
         android:id="@+id/btnHistoryDelete"
-        android:layout_width="26dp"
-        android:layout_height="26dp"
-        android:background="@drawable/bg_tv_side_back_btn"
-        android:clickable="true"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="4dp"
+        android:background="@drawable/button_bg_selector"
         android:contentDescription="Delete entry"
         android:focusable="true"
-        android:padding="5dp"
+        android:padding="7dp"
         android:scaleType="fitCenter"
-        android:src="@drawable/ic_delete_grey_400_24dp"
-        android:tint="@color/day_night_text_color_contrast" />
+        android:src="@drawable/ic_delete"
+        android:tint="#94A3B8" />
+
+    <!-- 3-Dot More Menu Button -->
+    <ImageButton
+        android:id="@+id/btnHistoryMenu"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="2dp"
+        android:background="@drawable/button_bg_selector"
+        android:contentDescription="More options"
+        android:focusable="true"
+        android:padding="6dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_more_vert"
+        android:tint="#94A3B8" />
 </LinearLayout>

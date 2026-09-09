@@ -18,7 +18,9 @@ import com.gothwad.browser.activity.main.zoomWebIn
 import com.gothwad.browser.activity.main.zoomWebOut
 import com.gothwad.browser.databinding.ViewSettingsMainBinding
 import com.gothwad.browser.webengine.WebEngineFactory
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 object SettingsGeneralSection {
 
@@ -268,6 +270,40 @@ object SettingsGeneralSection {
 
         vb.btnQuickDefaultBrowser.setOnClickListener {
             action()
+        }
+    }
+
+    fun initHistorySettingsUI(
+        context: Context,
+        vb: ViewSettingsMainBinding,
+        config: Config,
+        activity: Context?
+    ) {
+        vb.scSaveHistory.isChecked = config.saveHistory
+        vb.scSaveHistory.setOnCheckedChangeListener { _, isChecked ->
+            config.saveHistory = isChecked
+            val msg = if (isChecked) "Browsing history tracking enabled" else "Browsing history tracking paused"
+            Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+        }
+
+        vb.llSaveHistory.setOnClickListener {
+            vb.scSaveHistory.toggle()
+        }
+
+        vb.btnClearHistorySettings.setOnClickListener {
+            android.app.AlertDialog.Builder(context)
+                .setTitle("Clear Browsing History")
+                .setMessage("Are you sure you want to delete all saved browsing history? This action cannot be undone.")
+                .setPositiveButton("Clear History") { _, _ ->
+                    (activity as? androidx.appcompat.app.AppCompatActivity)?.lifecycleScope?.launch(Dispatchers.IO) {
+                        com.gothwad.browser.singleton.AppDatabase.db.historyDao().deleteAll()
+                        withContext(Dispatchers.Main) {
+                            Toast.makeText(context, "Browsing history cleared", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+                .setNegativeButton(android.R.string.cancel, null)
+                .show()
         }
     }
 }

@@ -164,42 +164,55 @@ class MainActivityViewModel: ActiveModel() {
     }
 
     fun logVisitedHistory(title: String?, url: String, faviconHash: String?) {
-        Log.d(TAG, "logVisitedHistory: $url")
-        if ((url == lastHistoryItem?.url) || url == Config.HOME_PAGE_URL || !url.startsWith("http", true)) {
+        val config = AppContext.provideConfig()
+        if (!config.saveHistory || config.incognitoMode) {
+            Log.d(TAG, "logVisitedHistory skipped: saveHistory=${config.saveHistory}, incognito=${config.incognitoMode}")
+            return
+        }
+        if (url.isBlank() || url == Config.HOME_PAGE_URL || !url.startsWith("http", true)) {
             return
         }
 
         val now = System.currentTimeMillis()
-        val minVisitedInterval = 5000L //5 seconds
-
-        lastHistoryItem?.let {
-            if ((!it.saved) && (it.time + minVisitedInterval) > now) {
-                lastHistoryItemSaveJob?.cancel()
-            }
+        // Chrome duplicate visit check: if exact same URL visited within 2 seconds, treat as redirect/refresh
+        val last = lastHistoryItem
+        if (last != null && last.url == url && (now - last.time) < 2000L) {
+            return
         }
 
-        val item = HistoryItem()
-        item.url = url
-        item.title = title ?: ""
-        item.time = now
-        item.favicon = faviconHash
+        val item = HistoryItem().apply {
+            this.url = url
+            this.title = if (!title.isNullOrBlank()) title else ""
+            this.time = now
+            this.favicon = faviconHash
+        }
         lastHistoryItem = item
-        lastHistoryItemSaveJob = modelScope.launch(Dispatchers.Main) {
-            delay(minVisitedInterval)
-            item.id = AppDatabase.db.historyDao().insert(item)
-            item.saved = true
+
+        lastHistoryItemSaveJob?.cancel()
+        lastHistoryItemSaveJob = modelScope.launch(Dispatchers.IO) {
+            try {
+                val id = AppDatabase.db.historyDao().insert(item)
+                item.id = id
+                item.saved = true
+            } catch (e: Exception) {
+                Log.e(TAG, "Failed to save history item", e)
+            }
         }
     }
 
     fun onTabTitleUpdated(tab: WebTabState) {
-        Log.d(TAG, "onTabTitleUpdated: ${tab.url} ${tab.title}")
-        if (AppContext.provideConfig().incognitoMode) return
+        val config = AppContext.provideConfig()
+        if (!config.saveHistory || config.incognitoMode) return
         val lastHistoryItem = lastHistoryItem ?: return
-        if (tab.url == lastHistoryItem.url) {
+        if (tab.url == lastHistoryItem.url && !tab.title.isNullOrBlank()) {
             lastHistoryItem.title = tab.title
-            if (lastHistoryItem.saved) {
-                modelScope.launch(Dispatchers.Main) {
-                    AppDatabase.db.historyDao().updateTitle(lastHistoryItem.id, lastHistoryItem.title)
+            modelScope.launch(Dispatchers.IO) {
+                try {
+                    if (lastHistoryItem.id > 0) {
+                        AppDatabase.db.historyDao().updateTitle(lastHistoryItem.id, lastHistoryItem.title)
+                    }
+                } catch (e: Exception) {
+                    Log.e(TAG, "Failed to update history title", e)
                 }
             }
         }

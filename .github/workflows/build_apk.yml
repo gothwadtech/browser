@@ -112,7 +112,11 @@ jobs:
           
           if [ -n "$KEYSTORE_BASE64" ]; then
             echo "Using Permanent Keystore from GitHub Secrets..."
-            echo "$KEYSTORE_BASE64" | base64 -d > "$KS_PATH"
+            echo "$KEYSTORE_BASE64" | tr -d '\r\n ' | base64 -d > "$KS_PATH"
+            if ! keytool -list -keystore "$KS_PATH" -storepass "$KEYSTORE_PASS" > /tmp/kt_diag.log 2>&1; then
+              echo "⚠️ WARNING: keytool failed to verify keystore with provided password!"
+              cat /tmp/kt_diag.log
+            fi
           else
             echo "⚠️ No GitHub Secret found! Generating temporary keystore..."
             DEFAULT_ALIAS="${KEY_ALIAS:-gothwad_tv_key}"

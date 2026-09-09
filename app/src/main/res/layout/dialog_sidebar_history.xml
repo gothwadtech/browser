@@ -24,90 +24,274 @@
         android:clickable="true"
         android:focusable="false"
         android:orientation="vertical"
-        android:paddingStart="16dp"
-        android:paddingTop="16dp"
-        android:paddingEnd="16dp"
-        android:paddingBottom="16dp">
+        android:paddingStart="14dp"
+        android:paddingTop="12dp"
+        android:paddingEnd="14dp"
+        android:paddingBottom="12dp">
 
-        <!-- Top Header with Back Button, Title, and Clear All Button -->
+        <!-- Top Header with Back Button, Title, Fullscreen Button, and Clear Button -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:paddingBottom="10dp">
+            android:paddingBottom="8dp">
 
             <ImageButton
                 android:id="@+id/btnHistoryBack"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
+                android:layout_width="34dp"
+                android:layout_height="34dp"
                 android:background="@drawable/bg_tv_side_back_btn"
                 android:clickable="true"
                 android:contentDescription="Close History"
                 android:focusable="true"
-                android:padding="6dp"
+                android:padding="7dp"
                 android:scaleType="fitCenter"
-                android:src="@drawable/ic_arrow_back_grey_900_24dp"
-                android:tint="@color/selector_tv_side_back_icon" />
+                android:src="@drawable/ic_close_grey_900_24dp"
+                android:tint="#FFFFFF" />
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginStart="10dp"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_clock_cyan"
+                android:tint="#38BDF8" />
 
             <TextView
                 android:id="@+id/tvHistoryTitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
+                android:layout_marginStart="8dp"
                 android:layout_weight="1"
-                android:text="Browsing History"
-                android:textColor="@color/day_night_text_color_contrast"
+                android:text="History"
+                android:textColor="#FFFFFF"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
+            <!-- Expand to Full Screen Button -->
+            <ImageButton
+                android:id="@+id/btnHistoryExpand"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginEnd="6dp"
+                android:background="@drawable/button_bg_selector"
+                android:contentDescription="Open in full screen"
+                android:focusable="true"
+                android:padding="6dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_fullscreen_expand"
+                android:tint="#94A3B8" />
+
+            <!-- Clear Browsing Data Button -->
             <Button
                 android:id="@+id/btnClearHistory"
                 android:layout_width="wrap_content"
-                android:layout_height="30dp"
+                android:layout_height="32dp"
                 android:background="@drawable/bg_pill_button"
                 android:focusable="true"
                 android:minHeight="0dp"
                 android:minWidth="0dp"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
-                android:text="Clear"
+                android:text="Clear Data"
                 android:textAllCaps="false"
-                android:textColor="@color/day_night_text_color_contrast"
+                android:textColor="#EF4444"
+                android:textSize="11sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <!-- History Paused Warning Banner (Shown when History is turned off in Settings) -->
+        <LinearLayout
+            android:id="@+id/llHistoryPausedBanner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/bg_chrome_history_card"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="10dp"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginEnd="8dp"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_incognito"
+                android:tint="#F59E0B" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="History tracking is paused"
+                android:textColor="#F59E0B"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/btnResumeHistory"
+                android:layout_width="wrap_content"
+                android:layout_height="28dp"
+                android:background="@drawable/bg_pill_button"
+                android:focusable="true"
+                android:minHeight="0dp"
+                android:minWidth="0dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:text="Resume"
+                android:textAllCaps="false"
+                android:textColor="#38BDF8"
+                android:textSize="11sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <!-- Multi-select Action Bar (Shown when items are selected) -->
+        <LinearLayout
+            android:id="@+id/llSelectionBar"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/bg_chrome_history_header"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/tvSelectedCount"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="1 selected"
+                android:textColor="#38BDF8"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/btnSelectAll"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginEnd="6dp"
+                android:background="@drawable/button_bg_selector"
+                android:focusable="true"
+                android:minHeight="0dp"
+                android:minWidth="0dp"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:text="Select All"
+                android:textAllCaps="false"
+                android:textColor="#94A3B8"
+                android:textSize="11sp" />
+
+            <Button
+                android:id="@+id/btnDeleteSelected"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginEnd="6dp"
+                android:background="@drawable/bg_pill_button"
+                android:focusable="true"
+                android:minHeight="0dp"
+                android:minWidth="0dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:text="Delete"
+                android:textAllCaps="false"
+                android:textColor="#FFFFFF"
+                android:textSize="11sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/btnCancelSelection"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:background="@drawable/button_bg_selector"
+                android:focusable="true"
+                android:minHeight="0dp"
+                android:minWidth="0dp"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:text="Cancel"
+                android:textAllCaps="false"
+                android:textColor="#94A3B8"
                 android:textSize="11sp" />
         </LinearLayout>
 
-        <!-- Search Input Bar -->
-        <EditText
-            android:id="@+id/etHistorySearch"
+        <!-- Search Bar with Clear Button and Voice Search -->
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="36dp"
+            android:layout_height="38dp"
             android:layout_marginBottom="8dp"
             android:background="@drawable/key_badge_bg"
-            android:drawableStart="@drawable/ic_search"
-            android:drawablePadding="8dp"
-            android:hint="Search history..."
-            android:imeOptions="actionSearch"
-            android:inputType="text"
-            android:paddingStart="10dp"
-            android:paddingEnd="10dp"
-            android:textColor="@color/day_night_text_color_contrast"
-            android:textColorHint="#64748B"
-            android:textSize="12sp" />
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp">
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginEnd="6dp"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_search"
+                android:tint="#94A3B8" />
+
+            <EditText
+                android:id="@+id/etHistorySearch"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:hint="Search history..."
+                android:imeOptions="actionSearch"
+                android:inputType="text"
+                android:singleLine="true"
+                android:textColor="@color/day_night_text_color_contrast"
+                android:textColorHint="#64748B"
+                android:textSize="12sp" />
+
+            <ImageButton
+                android:id="@+id/ibClearHistorySearch"
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:background="@drawable/button_bg_selector"
+                android:contentDescription="Clear search"
+                android:focusable="true"
+                android:padding="5dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_close_grey_900_24dp"
+                android:tint="#94A3B8"
+                android:visibility="gone" />
+
+            <ImageButton
+                android:id="@+id/ibVoiceSearch"
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:layout_marginStart="4dp"
+                android:background="@drawable/button_bg_selector"
+                android:contentDescription="Voice search"
+                android:focusable="true"
+                android:padding="5dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_mic_none_grey_900_36dp"
+                android:tint="#38BDF8" />
+        </LinearLayout>
 
         <!-- Filter Chips Row -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginBottom="8dp">
+            android:layout_marginBottom="8dp"
+            android:orientation="horizontal">
 
             <Button
                 android:id="@+id/btnHistoryFilterAll"
                 android:layout_width="0dp"
                 android:layout_height="30dp"
-                android:layout_weight="1"
                 android:layout_marginEnd="4dp"
+                android:layout_weight="1"
                 android:background="@drawable/bg_pill_button"
                 android:focusable="true"
                 android:text="All"
@@ -120,11 +304,24 @@
                 android:id="@+id/btnHistoryFilterToday"
                 android:layout_width="0dp"
                 android:layout_height="30dp"
-                android:layout_weight="1"
                 android:layout_marginEnd="4dp"
+                android:layout_weight="1"
                 android:background="@drawable/bg_pill_button"
                 android:focusable="true"
                 android:text="Today"
+                android:textAllCaps="false"
+                android:textColor="#94A3B8"
+                android:textSize="11sp" />
+
+            <Button
+                android:id="@+id/btnHistoryFilterYesterday"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_marginEnd="4dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_pill_button"
+                android:focusable="true"
+                android:text="Yesterday"
                 android:textAllCaps="false"
                 android:textColor="#94A3B8"
                 android:textSize="11sp" />
@@ -169,31 +366,35 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:orientation="vertical"
+                android:padding="20dp"
                 android:visibility="gone">
 
                 <ImageView
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:src="@drawable/ic_history_grey_900_36dp"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
                     android:alpha="0.4"
-                    android:tint="@color/day_night_text_color_contrast"
-                    android:contentDescription="@null" />
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_history_grey_900_36dp"
+                    android:tint="#38BDF8" />
 
                 <TextView
+                    android:id="@+id/tvEmptyTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="No History Found"
-                    android:textColor="@color/day_night_text_color_contrast"
-                    android:textSize="14sp"
+                    android:layout_marginTop="12dp"
+                    android:text="No Browsing History"
+                    android:textColor="#FFFFFF"
+                    android:textSize="15sp"
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/tvEmptySubtitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:text="Websites you visit will appear here"
-                    android:textColor="#64748B"
+                    android:gravity="center"
+                    android:text="Pages you visit in Gothwad Browser will appear here with timestamps, search, and quick access."
+                    android:textColor="#94A3B8"
                     android:textSize="12sp" />
             </LinearLayout>
         </FrameLayout>

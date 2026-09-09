@@ -66,6 +66,7 @@ class Config(val prefs: SharedPreferences) {
         const val SHOW_TOP_TAB_BAR_KEY = "show_top_tab_bar"
         const val KEEP_ALIVE_IN_BACKGROUND_KEY = "keep_alive_in_background"
         const val MAX_LIVE_TABS_KEY = "max_live_tabs"
+        const val SAVE_HISTORY_KEY = "save_history"
         /**
          * Maximum number of tab WebViews kept fully live in memory simultaneously.
          * Default is 6: balanced for typical Android TV boxes (1.5GB - 3GB RAM) to allow
@@ -253,6 +254,13 @@ class Config(val prefs: SharedPreferences) {
                 WEB_PAGE_ZOOM_PERCENT_KEY,
                 value.coerceIn(WEB_PAGE_ZOOM_PERCENT_MIN, WEB_PAGE_ZOOM_PERCENT_MAX)
             ).apply()
+        }
+
+    /** Whether to record visited URLs and searches into local history. */
+    var saveHistory: Boolean
+        get() = prefs.getBoolean(SAVE_HISTORY_KEY, true)
+        set(value) {
+            prefs.edit().putBoolean(SAVE_HISTORY_KEY, value).apply()
         }
 
     var theme = object : ObservableValue<Theme>(Theme.SYSTEM) {

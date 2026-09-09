@@ -40,6 +40,7 @@ class MainSettingsView @JvmOverloads constructor(
         SettingsRemoteSection.initVirtualCursorPhysicsSettingsUI(context, vb, config)
         SettingsRemoteSection.initKeyboardMouseSettingsUI(context, vb, config, activity)
         SettingsGeneralSection.initAppLockSettingsUI(context, vb)
+        SettingsGeneralSection.initHistorySettingsUI(context, vb, config, activity)
 
         vb.btnClearWebCache.setOnClickListener {
             (activity as? MainActivity)?.lifecycleScope?.launch {
