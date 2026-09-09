@@ -9,6 +9,7 @@
         <item name="android:windowAllowEnterTransitionOverlap">true</item>
         <item name="android:windowContentTransitions">true</item>
         <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowBackground">@color/top_bar_background</item>
         <item name="android:statusBarColor">@color/top_bar_background</item>
         <item name="android:navigationBarColor">@color/top_bar_background</item>
         <item name="android:windowLightStatusBar">true</item>

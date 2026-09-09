@@ -125,6 +125,47 @@ class TabsRowAdapter(
         holder.ibCloseTab.setOnClickListener {
             onCloseTabClick(tab)
         }
+
+        holder.ibCloseTab.isFocusable = true
+        holder.ibCloseTab.isClickable = true
+
+        holder.ibCloseTab.setOnFocusChangeListener { v, hasFocus ->
+            if (hasFocus) {
+                v.animate().scaleX(1.2f).scaleY(1.2f).setDuration(120).start()
+                (v as? ImageButton)?.setColorFilter(android.graphics.Color.WHITE)
+            } else {
+                v.animate().scaleX(1.0f).scaleY(1.0f).setDuration(120).start()
+                (v as? ImageButton)?.clearColorFilter()
+            }
+        }
+
+        holder.llTabRowCardRoot.setOnKeyListener { _, keyCode, event ->
+            if (event.action == android.view.KeyEvent.ACTION_DOWN) {
+                if (keyCode == android.view.KeyEvent.KEYCODE_DPAD_RIGHT) {
+                    holder.ibCloseTab.requestFocus()
+                    return@setOnKeyListener true
+                }
+                if (keyCode == android.view.KeyEvent.KEYCODE_FORWARD_DEL || keyCode == android.view.KeyEvent.KEYCODE_DEL) {
+                    onCloseTabClick(tab)
+                    return@setOnKeyListener true
+                }
+            }
+            false
+        }
+
+        holder.ibCloseTab.setOnKeyListener { _, keyCode, event ->
+            if (event.action == android.view.KeyEvent.ACTION_DOWN) {
+                if (keyCode == android.view.KeyEvent.KEYCODE_DPAD_LEFT) {
+                    holder.llTabRowCardRoot.requestFocus()
+                    return@setOnKeyListener true
+                }
+                if (keyCode == android.view.KeyEvent.KEYCODE_DPAD_CENTER || keyCode == android.view.KeyEvent.KEYCODE_ENTER || keyCode == android.view.KeyEvent.KEYCODE_NUMPAD_ENTER || keyCode == android.view.KeyEvent.KEYCODE_BUTTON_A) {
+                    onCloseTabClick(tab)
+                    return@setOnKeyListener true
+                }
+            }
+            false
+        }
     }
 
     override fun getItemCount(): Int = tabs.size

@@ -20,6 +20,9 @@ fun MainActivity.setupTopTabBar() {
         onCloseTabClick = { tab ->
             closeTab(tab)
         },
+        onNewTabClick = {
+            openInNewTab(settingsModel.homePage, tabsModel.tabsStates.size, needToHideMenuOverlay = false, navigateImmediately = true)
+        },
         onTabFocused = { _, position, _ ->
             vb.rvTopTabs.smoothScrollToPosition(position)
         }

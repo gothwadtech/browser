@@ -115,6 +115,9 @@ class TopTabsAdapter(
             }
 
             // TV Focus Animation
+            holder.ibTabClose.isFocusable = true
+            holder.ibTabClose.isClickable = true
+
             holder.llChromeTabRoot.setOnFocusChangeListener { v, hasFocus ->
                 if (hasFocus) {
                     onTabFocused(tab, holder.bindingAdapterPosition, v)
@@ -128,10 +131,23 @@ class TopTabsAdapter(
 
             holder.ibTabClose.setOnFocusChangeListener { v, hasFocus ->
                 if (hasFocus) {
-                    v.animate().scaleX(1.15f).scaleY(1.15f).setDuration(100).start()
+                    onTabFocused(tab, holder.bindingAdapterPosition, holder.llChromeTabRoot)
+                    v.animate().scaleX(1.2f).scaleY(1.2f).setDuration(100).start()
+                    (v as? ImageButton)?.setColorFilter(android.graphics.Color.WHITE)
                 } else {
                     v.animate().scaleX(1.0f).scaleY(1.0f).setDuration(100).start()
+                    (v as? ImageButton)?.clearColorFilter()
                 }
+            }
+
+            holder.llChromeTabRoot.setOnKeyListener { _, keyCode, event ->
+                if (event.action == android.view.KeyEvent.ACTION_DOWN) {
+                    if (keyCode == android.view.KeyEvent.KEYCODE_FORWARD_DEL || keyCode == android.view.KeyEvent.KEYCODE_DEL) {
+                        onCloseTabClick(tab)
+                        return@setOnKeyListener true
+                    }
+                }
+                false
             }
         } else if (holder is NewTabViewHolder) {
             holder.ibNewTabButton.setOnClickListener {

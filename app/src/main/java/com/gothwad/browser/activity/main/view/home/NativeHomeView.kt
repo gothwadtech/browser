@@ -53,6 +53,7 @@ class NativeHomeView @JvmOverloads constructor(
 
     init {
         orientation = VERTICAL
+        setBackgroundResource(R.color.top_bar_background)
         LayoutInflater.from(context).inflate(R.layout.view_native_home, this, true)
         initViews()
         setupBookmarks()
@@ -66,9 +67,16 @@ class NativeHomeView @JvmOverloads constructor(
         btnExitIncognito = findViewById(R.id.btnExitIncognito)
     }
 
+    fun applyThemeColor(bgColor: Int) {
+        setBackgroundColor(bgColor)
+        flNativeHomeRoot.setBackgroundColor(bgColor)
+    }
+
     fun updateIncognitoState(isIncognito: Boolean, mainActivity: MainActivity? = activity as? MainActivity) {
-        flNativeHomeRoot.setBackgroundResource(R.color.top_bar_background)
-        if (isIncognito) {
+        val act = mainActivity ?: (activity as? MainActivity)
+        val isIncog = isIncognito || (act?.config?.incognitoMode == true)
+        if (isIncog) {
+            applyThemeColor(Color.parseColor("#121212"))
             rvBookmarks.visibility = View.GONE
             svIncognitoHome.visibility = View.VISIBLE
             btnExitIncognito.setOnClickListener {
@@ -76,6 +84,9 @@ class NativeHomeView @JvmOverloads constructor(
             }
             stopDashboardTicker()
         } else {
+            val bgColor = act?.let { com.gothwad.browser.activity.main.getThemeBackgroundColor(context, it.config.theme.value) }
+                ?: androidx.core.content.ContextCompat.getColor(context, R.color.top_bar_background)
+            applyThemeColor(bgColor)
             rvBookmarks.visibility = View.VISIBLE
             svIncognitoHome.visibility = View.GONE
             startDashboardTicker()

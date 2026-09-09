@@ -43,15 +43,16 @@
 
         <ImageButton
             android:id="@+id/ibCloseTab"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:background="@null"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:background="@drawable/bg_chrome_close_btn"
+            android:clickable="true"
             android:contentDescription="Close Tab"
-            android:focusable="false"
-            android:padding="2dp"
+            android:focusable="true"
+            android:padding="4dp"
             android:scaleType="fitCenter"
             android:src="@drawable/ic_close_grey_900_24dp"
-            android:tint="#94A3B8" />
+            android:tint="#FFFFFF" />
     </LinearLayout>
 
     <!-- Thumbnail Preview / Web Content -->

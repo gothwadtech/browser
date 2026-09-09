@@ -22,6 +22,7 @@ import com.gothwad.browser.activity.main.dialogs.FileManagerSidebarPopup
 import com.gothwad.browser.activity.main.dialogs.HistorySidebarPopup
 import com.gothwad.browser.activity.main.dialogs.NotesSidebarPopup
 import com.gothwad.browser.activity.main.dialogs.ShortcutDialog
+import com.gothwad.browser.activity.main.dialogs.TabSearchSidebarPopup
 import com.gothwad.browser.activity.main.dialogs.favorites.FavoriteEditorDialog
 import com.gothwad.browser.model.FavoriteItem
 import com.gothwad.browser.settings.SettingsDialog
@@ -87,14 +88,38 @@ internal fun MainActivity.setupHeaderClickListeners(incognitoMode: Boolean) {
     vb.ibIncognito.setOnClickListener { toggleIncognitoMode(true) }
     vb.ibSettings.setOnClickListener { showSettingsDialog() }
 
+    // Top Tab Bar Buttons
+    vb.ibTopTabSearch.setOnClickListener {
+        TabSearchSidebarPopup(
+            activity = this,
+            onTabSelected = { tab -> switchToTab(tab) },
+            onCloseTab = { tab -> closeTab(tab) },
+            onReopenTab = { closedTab ->
+                openInNewTab(closedTab.url, needToHideMenuOverlay = true)
+            },
+            onNewTab = {
+                openInNewTab(settingsModel.homePage, needToHideMenuOverlay = true)
+            }
+        ).show()
+    }
+    vb.ibTopHideBars.setOnClickListener {
+        vb.rlActionBar.visibility = View.GONE
+    }
+    vb.ibTopCloseApp.setOnClickListener {
+        exitAppCompletely()
+    }
+
     if (incognitoMode) {
         vb.rlActionBar.setBackgroundColor(Color.parseColor("#1F1F1F"))
         vb.ibIncognito.imageTintList = ColorStateList.valueOf(Color.parseColor("#0494F4"))
+    } else {
+        applyAppTheme(config.theme.value)
     }
 
     vb.vActionBar.callback = this
 
     listOf(
+        vb.ibTopTabSearch, vb.ibTopHideBars, vb.ibTopCloseApp,
         vb.ibTopNewTab,
         vb.ibMenu, vb.ibHistory, vb.ibHome, vb.ibBack, vb.ibForward, vb.ibRefresh,
         vb.ibNewTab, vb.flTabsSwitcher, vb.ibNotes, vb.ibDownloads,
@@ -106,6 +131,45 @@ internal fun MainActivity.setupHeaderClickListeners(incognitoMode: Boolean) {
         it.onFocusChangeListener = bottomButtonsFocusListener
     }
     updateBackForwardButtons(canGoBack = false, canGoForward = false)
+}
+
+fun MainActivity.exitAppCompletely() {
+    try {
+        com.gothwad.browser.service.keepalive.BrowserKeepAliveService.stop(this)
+    } catch (e: Exception) {
+        // ignore
+    }
+    try {
+        tabsModel.onDetachActivity()
+    } catch (e: Throwable) {
+        // ignore
+    }
+    finishAffinity()
+    android.os.Process.killProcess(android.os.Process.myPid())
+}
+
+fun getThemeBackgroundColor(context: android.content.Context, theme: Config.Theme): Int {
+    return when (theme) {
+        Config.Theme.BLACK_AMOLED -> Color.BLACK
+        Config.Theme.BLACK_CHARCOAL -> Color.parseColor("#181818")
+        Config.Theme.BLACK_MIDNIGHT -> Color.parseColor("#0F172A")
+        Config.Theme.WHITE_PURE -> Color.WHITE
+        Config.Theme.WHITE_WARM -> Color.parseColor("#FAF8F5")
+        Config.Theme.WHITE_COOL -> Color.parseColor("#F1F5F9")
+        Config.Theme.SYSTEM -> {
+            val isNight = (context.resources.configuration.uiMode and android.content.res.Configuration.UI_MODE_NIGHT_MASK) == android.content.res.Configuration.UI_MODE_NIGHT_YES
+            if (isNight) Color.parseColor("#181818") else Color.parseColor("#F1F5F9")
+        }
+    }
+}
+
+fun MainActivity.applyAppTheme(theme: Config.Theme) {
+    val bgColor = getThemeBackgroundColor(this, theme)
+    vb.rlRoot.setBackgroundColor(bgColor)
+    if (!config.incognitoMode) {
+        vb.rlActionBar.setBackgroundColor(bgColor)
+    }
+    vb.vNativeHome.applyThemeColor(bgColor)
 }
 
 internal fun MainActivity.setupSettingsSubscriptions() {
@@ -125,6 +189,7 @@ internal fun MainActivity.setupSettingsSubscriptions() {
             Config.Theme.WHITE_COOL -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
             else -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
         }
+        applyAppTheme(it)
         WebEngineFactory.onThemeSettingUpdated(it)
     }
 

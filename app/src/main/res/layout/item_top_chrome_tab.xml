@@ -42,10 +42,11 @@
 
     <ImageButton
         android:id="@+id/ibTabClose"
-        android:layout_width="22dp"
-        android:layout_height="22dp"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
         android:layout_marginStart="3dp"
         android:background="@drawable/bg_chrome_close_btn"
+        android:clickable="true"
         android:contentDescription="Close Tab"
         android:focusable="true"
         android:padding="4dp"

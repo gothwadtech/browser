@@ -16,7 +16,7 @@
         android:background="@drawable/button_bg_selector"
         android:contentDescription="@string/open_new_tab"
         android:focusable="true"
-        android:padding="7dp"
+        android:padding="6dp"
         android:scaleType="fitCenter"
         android:tint="@color/header_button_icon_tint"
         android:src="@drawable/ic_add" />

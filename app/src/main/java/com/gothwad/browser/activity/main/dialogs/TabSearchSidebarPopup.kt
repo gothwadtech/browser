@@ -360,6 +360,8 @@ class TabSearchSidebarPopup(
 
                 tvActiveBadge.isVisible = isActive
                 ibClose.isVisible = true
+                ibClose.isFocusable = true
+                ibClose.isClickable = true
 
                 itemView.setOnClickListener { onClick(tab) }
                 ibClose.setOnClickListener { onClose(tab) }
@@ -369,7 +371,40 @@ class TabSearchSidebarPopup(
                 }
 
                 ibClose.setOnFocusChangeListener { v, hasFocus ->
-                    v.animate().scaleX(if (hasFocus) 1.15f else 1.0f).scaleY(if (hasFocus) 1.15f else 1.0f).setDuration(100).start()
+                    v.animate().scaleX(if (hasFocus) 1.2f else 1.0f).scaleY(if (hasFocus) 1.2f else 1.0f).setDuration(100).start()
+                    if (hasFocus) {
+                        ibClose.setColorFilter(Color.WHITE)
+                    } else {
+                        ibClose.clearColorFilter()
+                    }
+                }
+
+                itemView.setOnKeyListener { _, keyCode, event ->
+                    if (event.action == KeyEvent.ACTION_DOWN) {
+                        if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) {
+                            ibClose.requestFocus()
+                            return@setOnKeyListener true
+                        }
+                        if (keyCode == KeyEvent.KEYCODE_FORWARD_DEL || keyCode == KeyEvent.KEYCODE_DEL) {
+                            onClose(tab)
+                            return@setOnKeyListener true
+                        }
+                    }
+                    false
+                }
+
+                ibClose.setOnKeyListener { _, keyCode, event ->
+                    if (event.action == KeyEvent.ACTION_DOWN) {
+                        if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT) {
+                            itemView.requestFocus()
+                            return@setOnKeyListener true
+                        }
+                        if (keyCode == KeyEvent.KEYCODE_DPAD_CENTER || keyCode == KeyEvent.KEYCODE_ENTER || keyCode == KeyEvent.KEYCODE_NUMPAD_ENTER || keyCode == KeyEvent.KEYCODE_BUTTON_A) {
+                            onClose(tab)
+                            return@setOnKeyListener true
+                        }
+                    }
+                    false
                 }
             }
 

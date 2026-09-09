@@ -58,6 +58,9 @@ fun MainActivity.canWebPageScrollUp(): Boolean {
 }
 
 fun MainActivity.focusHeaderViewNearX(cursorX: Float) {
+    if (!vb.rlActionBar.isVisible) {
+        showMenuOverlay()
+    }
     val headerViews = getHeaderFocusableViews()
     if (headerViews.isEmpty()) {
         if (vb.ibHome.isShown && vb.ibHome.visibility == View.VISIBLE) {
@@ -115,11 +118,21 @@ fun MainActivity.handleDpadEvent(event: KeyEvent): Boolean {
         if (event.action == KeyEvent.ACTION_DOWN) {
             when (keyCode) {
                 KeyEvent.KEYCODE_DPAD_DOWN -> {
+                    if (focus == vb.ibTopTabSearch) {
+                        vb.ibMenu.requestFocus()
+                        return true
+                    }
+                    if (focus == vb.ibTopHideBars) {
+                        vb.ibIncognito.requestFocus()
+                        return true
+                    }
+                    if (focus == vb.ibTopCloseApp) {
+                        vb.ibSettings.requestFocus()
+                        return true
+                    }
                     val headerViews = getHeaderFocusableViews()
                     if (headerViews.isNotEmpty()) {
-                        if (focus == vb.ibTopNewTab) {
-                            headerViews.last().requestFocus()
-                        } else if (vb.rvTopTabs.childCount > 0) {
+                        if (vb.rvTopTabs.childCount > 0) {
                             val childIdx = (0 until vb.rvTopTabs.childCount).indexOfFirst { idx ->
                                 val child = vb.rvTopTabs.getChildAt(idx)
                                 child == focus || isDescendantOrSelf(focus, child)
@@ -145,28 +158,112 @@ fun MainActivity.handleDpadEvent(event: KeyEvent): Boolean {
                     return true
                 }
                 KeyEvent.KEYCODE_DPAD_RIGHT -> {
-                    if (focus == vb.ibTopNewTab) {
+                    if (focus == vb.ibTopCloseApp) {
+                        return true
+                    }
+                    if (focus == vb.ibTopHideBars) {
+                        vb.ibTopCloseApp.requestFocus()
+                        return true
+                    }
+                    if (focus == vb.ibTopTabSearch) {
+                        if (vb.rvTopTabs.childCount > 0) {
+                            vb.rvTopTabs.getChildAt(0)?.requestFocus()
+                        } else {
+                            vb.ibTopHideBars.requestFocus()
+                        }
+                        return true
+                    }
+                    // Inside rvTopTabs
+                    val tabChildCount = vb.rvTopTabs.childCount
+                    var focusedTabHolderView: View? = null
+                    var focusedTabChildIndex = -1
+                    for (i in 0 until tabChildCount) {
+                        val child = vb.rvTopTabs.getChildAt(i)
+                        if (child == focus || isDescendantOrSelf(focus, child)) {
+                            focusedTabHolderView = child
+                            focusedTabChildIndex = i
+                            break
+                        }
+                    }
+                    if (focusedTabHolderView != null) {
+                        val closeBtn = focusedTabHolderView.findViewById<View>(R.id.ibTabClose)
+                        if (closeBtn != null && closeBtn.visibility == View.VISIBLE && focus != closeBtn) {
+                            closeBtn.requestFocus()
+                            return true
+                        }
+                        if (focusedTabChildIndex + 1 < tabChildCount) {
+                            vb.rvTopTabs.getChildAt(focusedTabChildIndex + 1)?.requestFocus()
+                        } else {
+                            vb.ibTopHideBars.requestFocus()
+                        }
                         return true
                     }
                     val next = focus.focusSearch(View.FOCUS_RIGHT)
-                    if (next != null && (isTopTabBarView(next) || next == vb.ibTopNewTab)) {
+                    if (next != null && isTopTabBarView(next)) {
                         next.requestFocus()
-                    } else if (vb.ibTopNewTab.isVisible) {
-                        vb.ibTopNewTab.requestFocus()
+                    } else {
+                        vb.ibTopHideBars.requestFocus()
                     }
                     return true
                 }
                 KeyEvent.KEYCODE_DPAD_LEFT -> {
-                    if (focus == vb.ibTopNewTab) {
+                    if (focus == vb.ibTopTabSearch) {
+                        return true
+                    }
+                    if (focus == vb.ibTopCloseApp) {
+                        vb.ibTopHideBars.requestFocus()
+                        return true
+                    }
+                    if (focus == vb.ibTopHideBars) {
                         if (vb.rvTopTabs.childCount > 0) {
                             val lastChild = vb.rvTopTabs.getChildAt(vb.rvTopTabs.childCount - 1)
-                            lastChild?.requestFocus()
+                            val closeBtn = lastChild?.findViewById<View>(R.id.ibTabClose)
+                            if (closeBtn != null && closeBtn.visibility == View.VISIBLE) {
+                                closeBtn.requestFocus()
+                            } else {
+                                lastChild?.requestFocus()
+                            }
+                        } else {
+                            vb.ibTopTabSearch.requestFocus()
+                        }
+                        return true
+                    }
+                    // Inside rvTopTabs
+                    val tabChildCount = vb.rvTopTabs.childCount
+                    var focusedTabHolderView: View? = null
+                    var focusedTabChildIndex = -1
+                    for (i in 0 until tabChildCount) {
+                        val child = vb.rvTopTabs.getChildAt(i)
+                        if (child == focus || isDescendantOrSelf(focus, child)) {
+                            focusedTabHolderView = child
+                            focusedTabChildIndex = i
+                            break
+                        }
+                    }
+                    if (focusedTabHolderView != null) {
+                        val closeBtn = focusedTabHolderView.findViewById<View>(R.id.ibTabClose)
+                        if (closeBtn != null && closeBtn.visibility == View.VISIBLE && focus == closeBtn) {
+                            focusedTabHolderView.requestFocus()
+                            return true
+                        }
+                        if (focusedTabChildIndex > 0) {
+                            val prevChild = vb.rvTopTabs.getChildAt(focusedTabChildIndex - 1)
+                            val prevCloseBtn = prevChild?.findViewById<View>(R.id.ibTabClose)
+                            if (prevCloseBtn != null && prevCloseBtn.visibility == View.VISIBLE) {
+                                prevCloseBtn.requestFocus()
+                            } else {
+                                prevChild?.requestFocus()
+                            }
+                        } else {
+                            vb.ibTopTabSearch.requestFocus()
                         }
                         return true
                     }
                     val next = focus.focusSearch(View.FOCUS_LEFT)
                     if (next != null && isTopTabBarView(next)) {
                         next.requestFocus()
+                    } else {
+                        vb.ibTopTabSearch.requestFocus()
                     }
                     return true
                 }
@@ -216,6 +313,18 @@ fun MainActivity.handleDpadEvent(event: KeyEvent): Boolean {
                 }
                 KeyEvent.KEYCODE_DPAD_UP -> {
                     if (vb.llTopTabBar.isVisible && event.repeatCount == 0) {
+                        if (focus == vb.ibMenu) {
+                            vb.ibTopTabSearch.requestFocus()
+                            return true
+                        }
+                        if (focus == vb.ibSettings) {
+                            vb.ibTopCloseApp.requestFocus()
+                            return true
+                        }
+                        if (focus == vb.ibIncognito) {
+                            vb.ibTopHideBars.requestFocus()
+                            return true
+                        }
                         if (vb.rvTopTabs.childCount > 0) {
                             val currentTab = tabsModel.currentTab.value
                             var targetView: View? = null
@@ -231,8 +340,8 @@ fun MainActivity.handleDpadEvent(event: KeyEvent): Boolean {
                             }
                             targetView?.requestFocus()
                             return true
-                        } else if (vb.ibTopNewTab.isVisible) {
-                            vb.ibTopNewTab.requestFocus()
+                        } else {
+                            vb.ibTopTabSearch.requestFocus()
                             return true
                         }
                     }

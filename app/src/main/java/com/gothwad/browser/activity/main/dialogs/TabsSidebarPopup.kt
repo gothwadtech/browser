@@ -247,6 +247,57 @@ class TabsSidebarAdapter(
 
         holder.root.setOnClickListener { onTabClick(tab) }
         holder.btnClose.setOnClickListener { onCloseTabClick(tab) }
+
+        holder.btnClose.isFocusable = true
+        holder.btnClose.isClickable = true
+
+        holder.root.setOnFocusChangeListener { v, hasFocus ->
+            if (hasFocus) {
+                v.animate().scaleX(1.04f).scaleY(1.04f).setDuration(100).start()
+                v.elevation = 6f
+            } else {
+                v.animate().scaleX(1.0f).scaleY(1.0f).setDuration(100).start()
+                v.elevation = 0f
+            }
+        }
+
+        holder.btnClose.setOnFocusChangeListener { v, hasFocus ->
+            if (hasFocus) {
+                v.animate().scaleX(1.2f).scaleY(1.2f).setDuration(100).start()
+                (v as? ImageButton)?.setColorFilter(Color.WHITE)
+            } else {
+                v.animate().scaleX(1.0f).scaleY(1.0f).setDuration(100).start()
+                (v as? ImageButton)?.clearColorFilter()
+            }
+        }
+
+        holder.root.setOnKeyListener { _, keyCode, event ->
+            if (event.action == KeyEvent.ACTION_DOWN) {
+                if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) {
+                    holder.btnClose.requestFocus()
+                    return@setOnKeyListener true
+                }
+                if (keyCode == KeyEvent.KEYCODE_FORWARD_DEL || keyCode == KeyEvent.KEYCODE_DEL) {
+                    onCloseTabClick(tab)
+                    return@setOnKeyListener true
+                }
+            }
+            false
+        }
+
+        holder.btnClose.setOnKeyListener { _, keyCode, event ->
+            if (event.action == KeyEvent.ACTION_DOWN) {
+                if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT) {
+                    holder.root.requestFocus()
+                    return@setOnKeyListener true
+                }
+                if (keyCode == KeyEvent.KEYCODE_DPAD_CENTER || keyCode == KeyEvent.KEYCODE_ENTER || keyCode == KeyEvent.KEYCODE_NUMPAD_ENTER || keyCode == KeyEvent.KEYCODE_BUTTON_A) {
+                    onCloseTabClick(tab)
+                    return@setOnKeyListener true
+                }
+            }
+            false
+        }
     }
 
     override fun getItemCount(): Int = tabs.size

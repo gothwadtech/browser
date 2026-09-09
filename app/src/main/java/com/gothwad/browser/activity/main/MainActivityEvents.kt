@@ -118,6 +118,11 @@ internal fun MainActivity.handleBackNavigation() {
         return
     }
 
+    if (!vb.rlActionBar.isVisible) {
+        showMenuOverlay()
+        return
+    }
+
     val isNativeHomeVisible = vb.vNativeHome.isVisible
     val currentTab = tabsModel.currentTab.value
     val currentUrl = currentTab?.url ?: ""
