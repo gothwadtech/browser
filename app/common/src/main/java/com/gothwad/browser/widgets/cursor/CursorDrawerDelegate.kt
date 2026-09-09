@@ -31,6 +31,8 @@ class CursorDrawerDelegate(val context: Context, val surface: View) {
     private var cursorStrokeWidth: Float = 0f
     private val cursorDirection = Point(0, 0)
     val cursorPosition = PointF(0f, 0f)
+    var isDispatchingSyntheticEvent: Boolean = false
+        private set
     private val cursorSpeed = PointF(0f, 0f)
     private val paint = Paint()
     private var lastCursorUpdate = System.currentTimeMillis() - CURSOR_DISAPPEAR_TIMEOUT
@@ -251,9 +253,18 @@ class CursorDrawerDelegate(val context: Context, val surface: View) {
             action, 1, properties,
             pointerCoords, 0, 0, 1f, 1f, 0, 0, 0, 0)
         try {
-            surface.dispatchTouchEvent(motionEvent)
+            dispatchSyntheticTouchEvent(motionEvent)
         } finally {
             motionEvent.recycle()
+        }
+    }
+
+    private fun dispatchSyntheticTouchEvent(event: MotionEvent) {
+        isDispatchingSyntheticEvent = true
+        try {
+            surface.dispatchTouchEvent(event)
+        } finally {
+            isDispatchingSyntheticEvent = false
         }
     }
 
@@ -615,7 +626,7 @@ class CursorDrawerDelegate(val context: Context, val surface: View) {
             MotionEvent.ACTION_DOWN, 1, properties,
             pointerCoords, 0, 0, 1f, 1f, 0, 0, 0, 0
         )
-        surface.dispatchTouchEvent(event)
+        dispatchSyntheticTouchEvent(event)
 
         //step 2
         event = MotionEvent.obtain(
@@ -623,7 +634,7 @@ class CursorDrawerDelegate(val context: Context, val surface: View) {
             MotionEvent.ACTION_POINTER_2_DOWN, 2,
             properties, pointerCoords, 0, 0, 1f, 1f, 0, 0, 0, 0
         )
-        surface.dispatchTouchEvent(event)
+        dispatchSyntheticTouchEvent(event)
 
         surface.post(pinchZoomRunnable)
     }
@@ -633,7 +644,16 @@ class CursorDrawerDelegate(val context: Context, val surface: View) {
             dpadCenterPressed = false
             dispatchMotionEvent(cursorPosition.x, cursorPosition.y, MotionEvent.ACTION_UP)
         }
+        if (scrollHackStarted) {
+            scrollHackStarted = false
+            dispatchMotionEvent(scrollHackCoords.x, scrollHackCoords.y, MotionEvent.ACTION_CANCEL)
+        }
+        surface.removeCallbacks(cursorUpdateRunnable)
+        cursorSpeed.set(0f, 0f)
+        cursorDirection.set(0, 0)
+        surface.keyDispatcherState.reset(this)
         grabMode = false
+        mainHandler.removeCallbacks(cursorHideRunnable)
         lastCursorUpdate = System.currentTimeMillis() - CURSOR_DISAPPEAR_TIMEOUT
         surface.postInvalidate()
     }
@@ -703,7 +723,7 @@ class CursorDrawerDelegate(val context: Context, val surface: View) {
                         MotionEvent.ACTION_MOVE, 2, properties,
                         pointerCoords, 0, 0, 1f, 1f, 0, 0, 0, 0
                     )
-                    surface.dispatchTouchEvent(event)
+                    dispatchSyntheticTouchEvent(event)
                     surface.post(pinchZoomRunnable)
                 } else {
                     //step 5
@@ -718,7 +738,7 @@ class CursorDrawerDelegate(val context: Context, val surface: View) {
                         MotionEvent.ACTION_POINTER_2_UP, 2, properties,
                         pointerCoords, 0, 0, 1f, 1f, 0, 0, 0, 0
                     )
-                    surface.dispatchTouchEvent(event)
+                    dispatchSyntheticTouchEvent(event)
 
                     // step 6
                     event = MotionEvent.obtain(
@@ -726,7 +746,7 @@ class CursorDrawerDelegate(val context: Context, val surface: View) {
                         MotionEvent.ACTION_UP, 1, properties,
                         pointerCoords, 0, 0, 1f, 1f, 0, 0, 0, 0
                     )
-                    surface.dispatchTouchEvent(event)
+                    dispatchSyntheticTouchEvent(event)
                     pinchZoomStartTime = 0
                 }
             }

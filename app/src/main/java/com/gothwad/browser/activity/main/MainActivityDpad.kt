@@ -43,6 +43,20 @@ fun MainActivity.getHeaderFocusableViews(): List<View> {
     return list
 }
 
+fun MainActivity.canWebPageScrollUp(): Boolean {
+    val wv = tabsModel.currentTab.value?.webEngine?.getView()
+    if (wv != null && (wv.canScrollVertically(-1) || wv.scrollY > 0)) {
+        return true
+    }
+    for (i in 0 until vb.flWebViewContainer.childCount) {
+        val child = vb.flWebViewContainer.getChildAt(i)
+        if (child.canScrollVertically(-1) || child.scrollY > 0) {
+            return true
+        }
+    }
+    return false
+}
+
 fun MainActivity.focusHeaderViewNearX(cursorX: Float) {
     val headerViews = getHeaderFocusableViews()
     if (headerViews.isEmpty()) {
@@ -201,7 +215,7 @@ fun MainActivity.handleDpadEvent(event: KeyEvent): Boolean {
                     return true
                 }
                 KeyEvent.KEYCODE_DPAD_UP -> {
-                    if (vb.llTopTabBar.isVisible) {
+                    if (vb.llTopTabBar.isVisible && event.repeatCount == 0) {
                         if (vb.rvTopTabs.childCount > 0) {
                             val currentTab = tabsModel.currentTab.value
                             var targetView: View? = null
@@ -340,8 +354,10 @@ fun MainActivity.handleDpadEvent(event: KeyEvent): Boolean {
     } else {
         // 4. Web Page Active
         if (config.enableVirtualCursor) {
-            // If cursor is at the very top edge and user presses DPAD UP, navigate into Toolbar
-            if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_DPAD_UP && vb.flWebViewContainer.cursorDrawerDelegate.isCursorNearTop()) {
+            val canScrollUp = canWebPageScrollUp()
+            // If cursor is at the very top edge and the webpage cannot scroll up anymore, navigate into Toolbar
+            if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_DPAD_UP &&
+                !canScrollUp && vb.flWebViewContainer.cursorDrawerDelegate.isCursorNearTop()) {
                 val surfaceLoc = IntArray(2)
                 vb.flWebViewContainer.getLocationInWindow(surfaceLoc)
                 val windowCursorX = surfaceLoc[0] + vb.flWebViewContainer.cursorDrawerDelegate.cursorPosition.x

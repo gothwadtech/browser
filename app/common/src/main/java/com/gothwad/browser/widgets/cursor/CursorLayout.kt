@@ -100,7 +100,9 @@ class CursorLayout @JvmOverloads constructor(context: Context, attrs: AttributeS
     override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
         val hwInput = com.gothwad.browser.utils.HardwareInputManager.getInstance(context)
         if (hwInput.isDeviceBlocked(ev)) return true
-        cursorDrawerDelegate.hideCursor()
+        if (!cursorDrawerDelegate.isDispatchingSyntheticEvent) {
+            cursorDrawerDelegate.hideCursor()
+        }
         return super.dispatchTouchEvent(ev)
     }
 
