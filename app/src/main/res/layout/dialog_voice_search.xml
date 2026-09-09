@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="20dp"
+    android:layout_gravity="center">
+
+    <LinearLayout
+        android:id="@+id/llVoiceSearchRoot"
+        android:layout_width="480dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/bg_modal_dialog_card"
+        android:orientation="vertical"
+        android:padding="24dp"
+        android:elevation="16dp">
+
+        <!-- Top Header: Title & Close -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp">
+
+            <TextView
+                android:id="@+id/tvVoiceTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="@string/voice_search"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <ImageButton
+                android:id="@+id/ibVoiceClose"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/button_bg_selector"
+                android:contentDescription="Close"
+                android:focusable="true"
+                android:padding="6dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_close_grey_900_24dp"
+                android:tint="#8B949E" />
+        </RelativeLayout>
+
+        <!-- Center: Animated Mic with Ripple Ring Background -->
+        <FrameLayout
+            android:id="@+id/flMicContainer"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="12dp">
+
+            <!-- Pulsing outer ring -->
+            <View
+                android:id="@+id/vPulseRing"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center"
+                android:background="@drawable/bg_circle_pulse" />
+
+            <!-- Mic Circle Button -->
+            <FrameLayout
+                android:id="@+id/flMicButton"
+                android:layout_width="72dp"
+                android:layout_height="72dp"
+                android:layout_gravity="center"
+                android:background="@drawable/bg_circle_mic"
+                android:focusable="true"
+                android:clickable="true">
+
+                <ImageView
+                    android:id="@+id/ivVoiceMic"
+                    android:layout_width="38dp"
+                    android:layout_height="38dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_mic_none_grey_900_36dp"
+                    android:tint="#FFFFFF"
+                    android:contentDescription="@string/voice_search" />
+            </FrameLayout>
+        </FrameLayout>
+
+        <!-- Status TextView: "Listening..." -->
+        <TextView
+            android:id="@+id/tvVoiceStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/voice_search_listening"
+            android:textColor="#388BFD"
+            android:textSize="17sp"
+            android:textStyle="bold" />
+
+        <!-- Subtitle / Hint -->
+        <TextView
+            android:id="@+id/tvVoiceHint"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:gravity="center"
+            android:text="@string/voice_search_speak_now"
+            android:textColor="#8B949E"
+            android:textSize="13sp" />
+
+        <!-- Live Recognized Text Card -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="64dp"
+            android:layout_marginTop="14dp"
+            android:layout_marginBottom="18dp"
+            android:background="@drawable/bg_card_sleek"
+            android:gravity="center"
+            android:padding="12dp">
+
+            <TextView
+                android:id="@+id/tvVoiceRecognizedText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:hint="Speak to search or type URL…"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#484F58"
+                android:textSize="17sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <!-- Bottom Action Buttons: Cancel, Speak Again, Search -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnVoiceCancel"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="wrap_content"
+                android:layout_height="42dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/button_bg_selector"
+                android:focusable="true"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:text="@android:string/cancel"
+                android:textAllCaps="false"
+                android:textColor="#8B949E"
+                android:textSize="14sp" />
+
+            <Button
+                android:id="@+id/btnVoiceRetry"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="wrap_content"
+                android:layout_height="42dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/button_bg_selector"
+                android:focusable="true"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:text="@string/voice_search_try_again"
+                android:textAllCaps="false"
+                android:textColor="#58A6FF"
+                android:textSize="14sp" />
+
+            <Button
+                android:id="@+id/btnVoiceSearch"
+                android:layout_width="wrap_content"
+                android:layout_height="42dp"
+                android:background="@drawable/bg_pill_button"
+                android:focusable="true"
+                android:paddingStart="22dp"
+                android:paddingEnd="22dp"
+                android:text="@string/search"
+                android:textAllCaps="false"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+    </LinearLayout>
+</FrameLayout>

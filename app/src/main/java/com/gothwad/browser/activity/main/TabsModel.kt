@@ -31,6 +31,26 @@ class TabsModel : ActiveModel() {
     private val config = AppContext.provideConfig()
     private var incognitoMode = config.incognitoMode
 
+    data class RecentlyClosedTab(
+        val title: String,
+        val url: String,
+        val timestamp: Long = System.currentTimeMillis()
+    )
+
+    val recentlyClosedTabs = mutableListOf<RecentlyClosedTab>()
+
+    fun recordClosedTab(tab: WebTabState) {
+        val url = tab.url
+        if (url.isNotBlank() && url != Config.HOME_PAGE_URL && url != Config.HOME_URL_ALIAS && url != "about:blank") {
+            val title = if (tab.title.isNotBlank()) tab.title else url
+            recentlyClosedTabs.removeAll { it.url == url }
+            recentlyClosedTabs.add(0, RecentlyClosedTab(title, url))
+            if (recentlyClosedTabs.size > 25) {
+                recentlyClosedTabs.removeAt(recentlyClosedTabs.size - 1)
+            }
+        }
+    }
+
     init {
         tabsStates.subscribe({
             //auto-update positions on any list change
@@ -88,6 +108,7 @@ class TabsModel : ActiveModel() {
     }
 
     fun onCloseTab(tab: WebTabState) {
+        recordClosedTab(tab)
         tab.webEngine.onDetachFromWindow(completely = true, destroyTab = true)
         tabsStates.remove(tab)
         modelScope.launch(Dispatchers.IO) {
@@ -105,6 +126,7 @@ class TabsModel : ActiveModel() {
         try {
             val tabsClone = ArrayList(tabsStates)
             withContext(Dispatchers.Main) {
+                tabsClone.forEach { recordClosedTab(it) }
                 tabsStates.clear()
             }
             val tabsDB = AppDatabase.db.tabsDao()

@@ -261,6 +261,7 @@ open class MainActivity : AppCompatActivity(), ActionBar.Callback {
     }
 
     override fun onDestroy() {
+        voiceSearchHelper.destroy()
         if (::tabsModel.isInitialized) {
             tabsModel.onDetachActivity()
         }

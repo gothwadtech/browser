@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".activity.main.MainActivity"
     android:fitsSystemWindows="true"
+    android:background="@color/top_bar_background"
     tools:deviceIds="tv"
     android:clipChildren="false">
 
@@ -29,15 +30,30 @@
         <LinearLayout
             android:id="@+id/llTopTabBar"
             android:layout_width="match_parent"
-            android:layout_height="28dp"
-            android:layout_marginTop="0dp"
-            android:layout_marginBottom="0dp"
+            android:layout_height="38dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="2dp"
             android:paddingTop="0dp"
             android:paddingBottom="0dp"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:clipChildren="false">
 
+            <!-- 1. Left: Down Arrow (Search Tabs / Recently Closed Tabs) - Directly above ibMenu -->
+            <ImageButton
+                android:id="@+id/ibTopTabSearch"
+                android:layout_width="38dp"
+                android:layout_height="38dp"
+                android:layout_marginEnd="3dp"
+                android:background="@drawable/button_bg_selector"
+                android:contentDescription="Search and Recently Closed Tabs"
+                android:focusable="true"
+                android:padding="7dp"
+                android:scaleType="fitCenter"
+                android:tint="@color/header_button_icon_tint"
+                android:src="@drawable/ic_keyboard_arrow_down" />
+
+            <!-- 2. Middle: Tabs RecyclerView with '+' button after the last tab -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvTopTabs"
                 android:layout_width="0dp"
@@ -47,20 +63,46 @@
                 android:overScrollMode="never"
                 android:clipChildren="false" />
 
+            <!-- New Tab '+' button in top tab bar -->
             <ImageButton
                 android:id="@+id/ibTopNewTab"
-                android:layout_width="22dp"
-                android:layout_height="22dp"
-                android:layout_marginStart="3dp"
-                android:layout_marginEnd="2dp"
-                android:layout_gravity="center_vertical"
+                android:layout_width="38dp"
+                android:layout_height="38dp"
+                android:layout_marginEnd="3dp"
                 android:background="@drawable/button_bg_selector"
                 android:contentDescription="@string/open_new_tab"
                 android:focusable="true"
-                android:padding="3dp"
+                android:padding="7dp"
                 android:scaleType="fitCenter"
                 android:tint="@color/header_button_icon_tint"
                 android:src="@drawable/ic_add" />
+
+            <!-- 3. Right: Up Arrow (Hide Header & Tab Bar) - Directly above ibIncognito -->
+            <ImageButton
+                android:id="@+id/ibTopHideBars"
+                android:layout_width="38dp"
+                android:layout_height="38dp"
+                android:layout_marginEnd="3dp"
+                android:background="@drawable/button_bg_selector"
+                android:contentDescription="Hide Header and Tab Bar"
+                android:focusable="true"
+                android:padding="7dp"
+                android:scaleType="fitCenter"
+                android:tint="@color/header_button_icon_tint"
+                android:src="@drawable/ic_keyboard_arrow_up" />
+
+            <!-- 4. Far Right: Cross / Close Icon (Complete App Shutdown) - Directly above ibSettings -->
+            <ImageButton
+                android:id="@+id/ibTopCloseApp"
+                android:layout_width="38dp"
+                android:layout_height="38dp"
+                android:background="@drawable/button_bg_selector"
+                android:contentDescription="Exit Browser Completely"
+                android:focusable="true"
+                android:padding="7dp"
+                android:scaleType="fitCenter"
+                android:tint="@color/header_button_icon_tint"
+                android:src="@drawable/ic_close_grey_900_24dp" />
         </LinearLayout>
 
         <!-- Unified Main Header Toolbar -->

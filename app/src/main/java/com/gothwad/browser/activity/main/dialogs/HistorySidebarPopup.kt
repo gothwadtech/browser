@@ -37,6 +37,7 @@ import com.gothwad.browser.activity.main.openInNewTab
 import com.gothwad.browser.model.HistoryItem
 import com.gothwad.browser.singleton.AppDatabase
 import com.gothwad.browser.singleton.FaviconsPool
+import com.gothwad.browser.utils.VoiceSearchHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -276,7 +277,19 @@ class HistorySidebarPopup(
         }
 
         ibVoiceSearch.setOnClickListener {
-            activity.initiateVoiceSearch()
+            activity.voiceSearchHelper.initiateVoiceSearch(object : VoiceSearchHelper.Callback {
+                override fun onPartialResult(text: String) {
+                    etHistorySearch.setText(text)
+                    etHistorySearch.setSelection(text.length)
+                }
+
+                override fun onResult(text: String?) {
+                    if (!text.isNullOrBlank()) {
+                        etHistorySearch.setText(text)
+                        etHistorySearch.setSelection(text.length)
+                    }
+                }
+            })
         }
 
         btnHistoryFilterAll.setOnClickListener {

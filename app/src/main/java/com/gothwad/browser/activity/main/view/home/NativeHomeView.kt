@@ -67,10 +67,10 @@ class NativeHomeView @JvmOverloads constructor(
     }
 
     fun updateIncognitoState(isIncognito: Boolean, mainActivity: MainActivity? = activity as? MainActivity) {
+        flNativeHomeRoot.setBackgroundResource(R.color.top_bar_background)
         if (isIncognito) {
             rvBookmarks.visibility = View.GONE
             svIncognitoHome.visibility = View.VISIBLE
-            flNativeHomeRoot.setBackgroundColor(Color.parseColor("#1F1F1F"))
             btnExitIncognito.setOnClickListener {
                 (mainActivity ?: activity as? MainActivity)?.toggleIncognitoMode(andSwitchProcess = true)
             }

@@ -62,6 +62,7 @@
     <string name="navigate_back">Navigate back</string>
     <string name="navigate_home">Navigate home</string>
     <string name="refresh_page">Refresh page</string>
+    <string name="search">Search</string>
     <string name="voice_search">Voice search</string>
     <string name="zoom_in">Zoom in</string>
     <string name="zoom_out">Zoom out</string>
@@ -78,6 +79,11 @@
     <string name="storage_not_mounted">Storage not mounted</string>
     <string name="can_not_create_downloads">Can not create downloads dir</string>
     <string name="voice_search_not_found">Voice search not found</string>
+    <string name="voice_search_listening">Listening…</string>
+    <string name="voice_search_speak_now">Speak now into your microphone</string>
+    <string name="voice_search_try_again">Speak Again</string>
+    <string name="voice_search_didnt_hear">Didn\'t catch that. Please speak again.</string>
+    <string name="voice_permission_required">Microphone permission is required for voice search</string>
     <string name="new_version_dialog_title">New version available</string>
     <string name="later">Later</string>
     <string name="downloads">Downloads</string>

@@ -147,13 +147,24 @@ internal fun MainActivity.setupSettingsSubscriptions() {
 internal fun MainActivity.initiateVoiceSearchInternal() {
     hideMenuOverlay()
     voiceSearchHelper.initiateVoiceSearch(object : VoiceSearchHelper.Callback {
+        override fun onPartialResult(text: String) {
+            vb.vActionBar.setAddressBoxText(text)
+        }
+
         override fun onResult(text: String?) {
-            if (text == null) {
+            if (text.isNullOrBlank()) {
                 Utils.showToast(this@initiateVoiceSearchInternal, getString(R.string.can_not_recognize))
                 return
             }
+            vb.vActionBar.setAddressBoxText(text)
             search(text)
             hideMenuOverlay()
+        }
+
+        override fun onError(errorMessage: String?) {
+            if (!errorMessage.isNullOrBlank()) {
+                Utils.showToast(this@initiateVoiceSearchInternal, errorMessage)
+            }
         }
     })
 }

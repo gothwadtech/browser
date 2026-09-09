@@ -14,6 +14,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.gothwad.browser.Config
 import com.gothwad.browser.R
@@ -28,8 +29,14 @@ class TopTabsAdapter(
     private var currentTab: WebTabState?,
     private val onTabClick: (WebTabState) -> Unit,
     private val onCloseTabClick: (WebTabState) -> Unit,
+    private val onNewTabClick: () -> Unit = {},
     private val onTabFocused: (WebTabState, Int, View) -> Unit = { _, _, _ -> }
-) : RecyclerView.Adapter<TopTabsAdapter.TopTabViewHolder>() {
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    companion object {
+        const val TYPE_TAB = 0
+        const val TYPE_NEW_TAB = 1
+    }
 
     class TopTabViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val llChromeTabRoot: LinearLayout = view.findViewById(R.id.llChromeTabRoot)
@@ -38,80 +45,109 @@ class TopTabsAdapter(
         val ibTabClose: ImageButton = view.findViewById(R.id.ibTabClose)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TopTabViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_top_chrome_tab, parent, false)
-        return TopTabViewHolder(view)
+    class NewTabViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val ibNewTabButton: ImageButton = view.findViewById(R.id.ibNewTabButton)
     }
 
-    override fun onBindViewHolder(holder: TopTabViewHolder, position: Int) {
-        val tab = tabs[position]
-        val isActive = tab == currentTab
-        holder.itemView.tag = tab
+    override fun getItemCount(): Int = tabs.size + 1
 
-        val isHome = tab.url.isEmpty() ||
-                tab.url == Config.HOME_PAGE_URL ||
-                tab.url == Config.HOME_URL_ALIAS ||
-                tab.url == "about:blank" ||
-                tab.title.equals("Home Screen", ignoreCase = true) ||
-                tab.title.equals("Home", ignoreCase = true)
+    override fun getItemViewType(position: Int): Int {
+        return if (position < tabs.size) TYPE_TAB else TYPE_NEW_TAB
+    }
 
-        if (isHome) {
-            holder.tvTabTitle.text = holder.itemView.context.getString(R.string.home_screen)
-            holder.ivTabFavicon.setImageResource(R.drawable.ic_home_grey_900_24dp)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        val inflater = LayoutInflater.from(parent.context)
+        return if (viewType == TYPE_TAB) {
+            val view = inflater.inflate(R.layout.item_top_chrome_tab, parent, false)
+            TopTabViewHolder(view)
         } else {
-            holder.tvTabTitle.text = if (tab.title.isNotBlank()) tab.title else tab.url
-            holder.ivTabFavicon.setImageResource(R.drawable.ic_tab_default_favicon)
-
-            // Async Favicon loading
-            val activity = holder.itemView.activity as? AppCompatActivity
-            val scope = activity?.lifecycleScope
-            scope?.launch(Dispatchers.Main) {
-                try {
-                    val favicon = FaviconsPool.get(tab.url)
-                    if (holder.itemView.tag == tab && favicon != null) {
-                        holder.ivTabFavicon.setImageBitmap(favicon)
-                    }
-                } catch (_: Exception) {}
-            }
-        }
-
-        // Active styling
-        holder.llChromeTabRoot.isSelected = isActive
-        holder.llChromeTabRoot.isActivated = isActive
-        holder.tvTabTitle.setTypeface(null, if (isActive) Typeface.BOLD else Typeface.NORMAL)
-        holder.tvTabTitle.alpha = if (isActive) 1.0f else 0.85f
-
-        // Click actions
-        holder.llChromeTabRoot.setOnClickListener {
-            onTabClick(tab)
-        }
-
-        holder.ibTabClose.setOnClickListener {
-            onCloseTabClick(tab)
-        }
-
-        // TV Focus Animation
-        holder.llChromeTabRoot.setOnFocusChangeListener { v, hasFocus ->
-            if (hasFocus) {
-                onTabFocused(tab, holder.bindingAdapterPosition, v)
-                v.animate().scaleX(1.04f).scaleY(1.04f).setDuration(100).start()
-                v.elevation = 6f
-            } else {
-                v.animate().scaleX(1.0f).scaleY(1.0f).setDuration(100).start()
-                v.elevation = 0f
-            }
-        }
-
-        holder.ibTabClose.setOnFocusChangeListener { v, hasFocus ->
-            if (hasFocus) {
-                v.animate().scaleX(1.15f).scaleY(1.15f).setDuration(100).start()
-            } else {
-                v.animate().scaleX(1.0f).scaleY(1.0f).setDuration(100).start()
-            }
+            val view = inflater.inflate(R.layout.item_top_chrome_new_tab, parent, false)
+            NewTabViewHolder(view)
         }
     }
 
-    override fun getItemCount(): Int = tabs.size
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        if (holder is TopTabViewHolder) {
+            val tab = tabs[position]
+            val isActive = tab == currentTab
+            holder.itemView.tag = tab
+
+            val isHome = tab.url.isEmpty() ||
+                    tab.url == Config.HOME_PAGE_URL ||
+                    tab.url == Config.HOME_URL_ALIAS ||
+                    tab.url == "about:blank" ||
+                    tab.title.equals("Home Screen", ignoreCase = true) ||
+                    tab.title.equals("Home", ignoreCase = true)
+
+            if (isHome) {
+                holder.tvTabTitle.text = holder.itemView.context.getString(R.string.home_screen)
+                holder.ivTabFavicon.setImageResource(R.drawable.ic_home_grey_900_24dp)
+            } else {
+                holder.tvTabTitle.text = if (tab.title.isNotBlank()) tab.title else tab.url
+                holder.ivTabFavicon.setImageResource(R.drawable.ic_tab_default_favicon)
+
+                // Async Favicon loading
+                val activity = holder.itemView.activity as? AppCompatActivity
+                val scope = activity?.lifecycleScope
+                scope?.launch(Dispatchers.Main) {
+                    try {
+                        val favicon = FaviconsPool.get(tab.url)
+                        if (holder.itemView.tag == tab && favicon != null) {
+                            holder.ivTabFavicon.setImageBitmap(favicon)
+                        }
+                    } catch (_: Exception) {}
+                }
+            }
+
+            // Active styling
+            holder.llChromeTabRoot.isSelected = isActive
+            holder.llChromeTabRoot.isActivated = isActive
+            holder.tvTabTitle.setTypeface(null, if (isActive) Typeface.BOLD else Typeface.NORMAL)
+            holder.tvTabTitle.alpha = if (isActive) 1.0f else 0.85f
+
+            // Click actions
+            holder.llChromeTabRoot.setOnClickListener {
+                onTabClick(tab)
+            }
+
+            holder.ibTabClose.setOnClickListener {
+                onCloseTabClick(tab)
+            }
+
+            // TV Focus Animation
+            holder.llChromeTabRoot.setOnFocusChangeListener { v, hasFocus ->
+                if (hasFocus) {
+                    onTabFocused(tab, holder.bindingAdapterPosition, v)
+                    v.animate().scaleX(1.04f).scaleY(1.04f).setDuration(100).start()
+                    v.elevation = 6f
+                } else {
+                    v.animate().scaleX(1.0f).scaleY(1.0f).setDuration(100).start()
+                    v.elevation = 0f
+                }
+            }
+
+            holder.ibTabClose.setOnFocusChangeListener { v, hasFocus ->
+                if (hasFocus) {
+                    v.animate().scaleX(1.15f).scaleY(1.15f).setDuration(100).start()
+                } else {
+                    v.animate().scaleX(1.0f).scaleY(1.0f).setDuration(100).start()
+                }
+            }
+        } else if (holder is NewTabViewHolder) {
+            holder.ibNewTabButton.setOnClickListener {
+                onNewTabClick()
+            }
+            holder.ibNewTabButton.setOnFocusChangeListener { v, hasFocus ->
+                if (hasFocus) {
+                    v.animate().scaleX(1.12f).scaleY(1.12f).setDuration(100).start()
+                    val lastTab = tabs.lastOrNull() ?: WebTabState()
+                    onTabFocused(lastTab, holder.bindingAdapterPosition, v)
+                } else {
+                    v.animate().scaleX(1.0f).scaleY(1.0f).setDuration(100).start()
+                }
+            }
+        }
+    }
 
     fun updateData(newTabs: List<WebTabState>, newCurrentTab: WebTabState?) {
         val oldTabs = tabs
@@ -119,45 +155,21 @@ class TopTabsAdapter(
         tabs = newTabs.toMutableList()
         currentTab = newCurrentTab
 
-        if (oldTabs == newTabs) {
-            if (oldCurrentTab != newCurrentTab) {
-                val oldPos = oldTabs.indexOf(oldCurrentTab)
-                val newPos = newTabs.indexOf(newCurrentTab)
-                if (oldPos != -1) notifyItemChanged(oldPos)
-                if (newPos != -1) notifyItemChanged(newPos)
-            }
-            return
-        }
-
-        if (newTabs.size == oldTabs.size + 1 && oldTabs == newTabs.subList(0, oldTabs.size)) {
-            val insertedPos = oldTabs.size
-            notifyItemInserted(insertedPos)
-            if (oldCurrentTab != newCurrentTab) {
-                val oldPos = oldTabs.indexOf(oldCurrentTab)
-                if (oldPos != -1) notifyItemChanged(oldPos)
-            }
-            return
-        }
-
-        if (newTabs.size == oldTabs.size - 1) {
-            val removedIndex = oldTabs.indexOfFirst { !newTabs.contains(it) }
-            if (removedIndex != -1) {
-                notifyItemRemoved(removedIndex)
-                if (oldCurrentTab != newCurrentTab) {
-                    val newPos = newTabs.indexOf(newCurrentTab)
-                    if (newPos != -1) notifyItemChanged(newPos)
-                }
-                return
-            }
-        }
-
-        val diffResult = androidx.recyclerview.widget.DiffUtil.calculateDiff(object : androidx.recyclerview.widget.DiffUtil.Callback() {
-            override fun getOldListSize(): Int = oldTabs.size
-            override fun getNewListSize(): Int = newTabs.size
+        val diffResult = DiffUtil.calculateDiff(object : DiffUtil.Callback() {
+            override fun getOldListSize(): Int = oldTabs.size + 1
+            override fun getNewListSize(): Int = newTabs.size + 1
             override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+                val oldIsNewTab = oldItemPosition == oldTabs.size
+                val newIsNewTab = newItemPosition == newTabs.size
+                if (oldIsNewTab && newIsNewTab) return true
+                if (oldIsNewTab || newIsNewTab) return false
                 return oldTabs[oldItemPosition].id == newTabs[newItemPosition].id
             }
             override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+                val oldIsNewTab = oldItemPosition == oldTabs.size
+                val newIsNewTab = newItemPosition == newTabs.size
+                if (oldIsNewTab && newIsNewTab) return true
+                if (oldIsNewTab || newIsNewTab) return false
                 val oldItem = oldTabs[oldItemPosition]
                 val newItem = newTabs[newItemPosition]
                 val oldIsActive = oldItem == oldCurrentTab

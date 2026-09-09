@@ -4,7 +4,7 @@
     android:id="@+id/llNativeHomeRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/day_night_background_color"
+    android:background="@color/top_bar_background"
     android:paddingStart="6dp"
     android:paddingEnd="6dp"
     android:paddingTop="6dp"

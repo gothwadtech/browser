@@ -336,14 +336,25 @@ class HistoryActivity : AppCompatActivity(), AdapterView.OnItemClickListener, Ad
 
     private fun initiateVoiceSearch() {
         voiceSearchHelper.initiateVoiceSearch(object : VoiceSearchHelper.Callback {
+            override fun onPartialResult(text: String) {
+                vb.etSearchHistory.setText(text)
+                vb.etSearchHistory.setSelection(text.length)
+            }
+
             override fun onResult(text: String?) {
-                if (text == null) {
+                if (text.isNullOrBlank()) {
                     Utils.showToast(this@HistoryActivity, getString(R.string.can_not_recognize))
                     return
                 }
                 vb.etSearchHistory.setText(text)
+                vb.etSearchHistory.setSelection(text.length)
             }
         })
+    }
+
+    override fun onDestroy() {
+        voiceSearchHelper.destroy()
+        super.onDestroy()
     }
 
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {
