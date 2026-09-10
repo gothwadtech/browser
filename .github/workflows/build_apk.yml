@@ -187,7 +187,19 @@ jobs:
             "${{ steps.versioning.outputs.v_name }}" \
             "output_release"
 
-      - name: Upload Signed Release APK, Debug APK, AAB & Linux Packages
+      - name: Build Windows Package (.zip)
+        run: |
+          chmod +x packaging/windows/build-windows-package.sh
+          RELEASE_APK="output_release/GothwadTVBrowser-v${{ steps.versioning.outputs.v_name }}-Release.apk"
+          if [ ! -f "$RELEASE_APK" ]; then
+            RELEASE_APK="output_release/GothwadTVBrowser-v${{ steps.versioning.outputs.v_name }}-Debug.apk"
+          fi
+          ./packaging/windows/build-windows-package.sh \
+            "$RELEASE_APK" \
+            "${{ steps.versioning.outputs.v_name }}" \
+            "output_release"
+
+      - name: Upload Signed Release APK, Debug APK, AAB, Linux & Windows Packages
         uses: actions/upload-artifact@v4
         with:
           name: Gothwad-TV-Browser-v${{ steps.versioning.outputs.v_name }}-Build${{ steps.versioning.outputs.v_code }}
@@ -209,3 +221,4 @@ jobs:
             output_release/GothwadTVBrowser-v${{ steps.versioning.outputs.v_name }}-PlayStore.aab
             output_release/gothwad-browser_${{ steps.versioning.outputs.v_name }}_all.deb
             output_release/gothwad-browser-linux-v${{ steps.versioning.outputs.v_name }}.tar.gz
+            output_release/gothwad-browser-windows-${{ steps.versioning.outputs.v_name }}.zip
