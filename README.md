@@ -1,9 +1,9 @@
 <div align="center">
 
-# 🌐 Gothwad Browser
-### *The Fastest, Securest & Ultra-Lightweight Web Browser for Android TVs, Tablets & Phones*
+# 🌐 Gothwad TV Browser
+### *The Ultimate Desktop-Grade Web Browser for Android TVs, Tablets, Phones, Linux, Windows & macOS*
 
-[![Platform](https://img.shields.io/badge/Platform-Android%20TV%20%7C%20Tablets%20%7C%20Phones-4CAF50?style=for-the-badge&logo=android)](https://developer.android.com/tv)
+[![Platform](https://img.shields.io/badge/Platforms-Android%20TV%20%7C%20Tablets%20%7C%20Linux%20%7C%20Windows%20%7C%20macOS-4CAF50?style=for-the-badge&logo=android)](https://github.com/Gothwad/gothwad-browser)
 [![Engine](https://img.shields.io/badge/Engine-Native%20Chromium%20WebView-4285F4?style=for-the-badge&logo=google-chrome)](https://developer.android.com/develop/ui/views/layout/webapps/webview)
 [![Language](https://img.shields.io/badge/Language-Kotlin-7F52FF?style=for-the-badge&logo=kotlin)](https://kotlinlang.org)
 [![Target Size](https://img.shields.io/badge/APK%20Footprint-%3C%2010%20MB-FF5722?style=for-the-badge)](#-engineering-journey--vision)
@@ -12,10 +12,31 @@
 
 <br/>
 
-> **"Gothwad Browser is the fastest, securest, and most lightweight browser for Android Phones & TVs you have ever seen. Advanced features engineered specifically for physical keyboard and mouse on Android TVs, with industry-leading support for TV remote D-Pad navigation. Built for genuine multitasking with an inbuilt File Manager, TV Notepad, and Clipboard Manager. Try first, then believe."**  
+### 📥 Get Gothwad TV Browser
+
+[![Get on Google Play](https://img.shields.io/badge/Google_Play-Get%20it%20on%20Play%20Store-00875A?style=for-the-badge&logo=google-play&logoColor=white)](https://play.google.com/store/apps/details?id=com.gothwad.browser)
+[![Get on JioStore](https://img.shields.io/badge/JioStore-Available%20on%20Jio%20Set--Top%20Box-0A2885?style=for-the-badge&logo=reliance&logoColor=white)](https://www.jio.com/fiber/services/set-top-box)
+[![Official Website](https://img.shields.io/badge/Official_Website-Visit%20gothwad.com-FF6F00?style=for-the-badge&logo=google-chrome&logoColor=white)](https://gothwad.com)
+[![Direct Download](https://img.shields.io/badge/GitHub-Download%20Latest%20Release-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Gothwad/gothwad-browser/releases)
+
+<br/>
+
+> **"Gothwad Browser is the fastest, securest, and most lightweight browser for Android Phones, TVs, Linux, Windows, and macOS you have ever seen. Engineered with full keyboard and mouse parity, industry-leading TV remote D-Pad navigation, an inbuilt File Manager, TV Notepad, AdBlocker, and Clipboard Manager. Try first, then believe."**  
 > — *Made in India with ❤️ by Gothwad Tech*
 
 </div>
+
+---
+
+## ⚡ Quick Download & Installation Matrix
+
+| Platform | Format | How to Install |
+|---|---|---|
+| **📱 Android TV / Google TV / Phone / Tablet** | `.apk` / `.aab` | • Install from **Google Play Store** or **JioStore** on your TV<br/>• Or download `GothwadTVBrowser-vX.X.X-Release.apk` and side-load |
+| **🐧 Linux (Ubuntu, Debian, Mint)** | `.deb` | `sudo dpkg -i gothwad-browser_*_all.deb`<br/>*(Installs launcher, icon, and desktop entry automatically)* |
+| **🐧 Linux (Arch, Fedora, Universal)** | `.tar.gz` | Extract `gothwad-browser-linux-v*.tar.gz` and run `./install.sh` |
+| **🪟 Windows (10 & 11)** | `.zip` (Portable / Installer) | Extract `gothwad-browser-windows-*.zip` and double-click **`Install.bat`**<br/>*(Creates Desktop + Start Menu shortcuts with icon)* |
+| **🍎 macOS (Apple Silicon & Intel)** | `.zip` (`.app` bundle) | Extract `gothwad-browser-macos-*.zip` and drag **`Gothwad TV Browser.app`** to `/Applications` |
 
 ---
 
@@ -31,13 +52,18 @@
 ---
 
 ## 📑 Table of Contents
+- [⚡ Quick Download Matrix](#-quick-download--installation-matrix)
 - [✨ Core Highlights](#-core-highlights)
+- [💻 Multi-Platform Installation Guide](#-multi-platform-installation-guide)
+  - [📱 Android (TV, Phones, Tablets)](#-1-android-tv-phones--tablets)
+  - [🐧 Linux (Debian, Ubuntu, Fedora, Arch)](#-2-linux-ubuntu-debian-fedora-arch)
+  - [🪟 Windows (10 & 11)](#-3-windows-10--11)
+  - [🍎 macOS (Apple Silicon & Intel)](#-4-macos-apple-silicon--intel)
 - [🎮 Complete Input & Hardware Parity](#-complete-input--hardware-parity)
 - [🧰 Integrated Productivity Suite](#-integrated-productivity-suite)
 - [🚀 Genesis & Engineering Journey](#-genesis--engineering-journey)
 - [🏗️ Architecture & Philosophy](#️-architecture--philosophy)
 - [🗺️ Development Roadmap](#️-development-roadmap)
-- [📱 Supported Platforms & Form Factors](#-supported-platforms--form-factors)
 - [⚖️ Proprietary Notice & Usage Terms](#-proprietary-notice--usage-terms)
 - [❤️ Author & Credits](#️-author--credits)
 
@@ -45,7 +71,7 @@
 
 ## ✨ Core Highlights
 
-Gothwad Browser is built with a singular mission: **bring desktop PC Chrome-grade browsing to Android TV and mobile screens without the bloat.**
+Gothwad Browser is built with a singular mission: **bring desktop PC Chrome-grade browsing to Android TV, mobile screens, Linux, Windows, and macOS without the bloat.**
 
 - ⚡ **Ultra-Fast & Featherweight:** Engineered to stay under a **10 MB APK footprint**, booting instantaneously even on budget TV streaming sticks with limited RAM (1GB/2GB).
 - 🖥️ **PC-Grade Chromium Engine:** Native Chromium rendering fidelity. No synthetic CSS zooms, no layout reflow compromises, and no artificial color shifts—pages render exactly as intended.
@@ -53,6 +79,60 @@ Gothwad Browser is built with a singular mission: **bring desktop PC Chrome-grad
 - 🗂️ **Advanced Tab Architecture:** Dynamic top-tab bar and row/grid tab switchers with proactive LRU memory trimming so you can keep 10+ tabs without background crashes.
 - 🔒 **App Lock & Privacy:** Built-in PIN security lock to safeguard your browsing sessions, private files, notes, and history.
 - 🌐 **Global Accessibility:** Native localized interfaces across 10+ languages with responsive 10-foot TV UI ergonomics.
+
+---
+
+## 💻 Multi-Platform Installation Guide
+
+### 📱 1. Android (TV, Phones & Tablets)
+1. **Google Play Store / JioStore:** Search for **"Gothwad TV Browser"** and install with 1-click.
+2. **Direct APK Side-loading:**
+   - Download `GothwadTVBrowser-vX.X.X-Release.apk` from [GitHub Releases](https://github.com/Gothwad/gothwad-browser/releases).
+   - Use a file manager, USB drive, or "Send Files to TV" app to install the APK directly on your TV box or phone.
+
+---
+
+### 🐧 2. Linux (Ubuntu, Debian, Fedora, Arch)
+
+#### For Debian / Ubuntu / Mint (`.deb`):
+```bash
+# 1. Download the .deb from Releases
+wget https://github.com/Gothwad/gothwad-browser/releases/latest/download/gothwad-browser_all.deb
+
+# 2. Install package
+sudo dpkg -i gothwad-browser_all.deb
+sudo apt-get install -f # resolve any optional dependencies
+```
+
+#### For Arch / Fedora / Universal (`.tar.gz`):
+```bash
+tar -xzf gothwad-browser-linux-v*.tar.gz
+cd gothwad-browser-linux-*
+./install.sh
+```
+*Gothwad TV Browser will be added to your desktop application launcher with its native high-res icon.*
+
+---
+
+### 🪟 3. Windows (10 & 11)
+
+1. Download **`gothwad-browser-windows-vX.X.X.zip`** from [GitHub Releases](https://github.com/Gothwad/gothwad-browser/releases).
+2. Extract the folder on your PC.
+3. Double-click **`Install.bat`**.
+   - It will automatically create a **Desktop shortcut** and **Start Menu entry** with the official browser icon.
+   - If Windows Subsystem for Android (WSA) or ADB is active, the app will install directly.
+4. Launch from your desktop shortcut at any time!
+5. To uninstall cleanly, simply run **`Uninstall.bat`**.
+
+---
+
+### 🍎 4. macOS (Apple Silicon & Intel)
+
+1. Download **`gothwad-browser-macos-vX.X.X.zip`** from [GitHub Releases](https://github.com/Gothwad/gothwad-browser/releases).
+2. Extract the archive.
+3. Drag **`Gothwad TV Browser.app`** into your **`/Applications`** folder (or run `./install.sh`).
+4. Launch via **Launchpad**, **Spotlight**, or your **Dock**.
+5. To uninstall, simply run `./uninstall.sh` or move the app to Trash.
 
 ---
 

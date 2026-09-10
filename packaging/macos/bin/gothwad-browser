@@ -1,0 +1,59 @@
+#!/usr/bin/env bash
+# ==============================================================================
+# Gothwad TV Browser — macOS App Launcher
+# ==============================================================================
+
+BUNDLE_DIR="$(cd "$(dirname "$0")/../.." && pwd)"
+RESOURCES_DIR="$BUNDLE_DIR/Contents/Resources"
+APK_PATH="$RESOURCES_DIR/app.apk"
+PACKAGE="com.gothwad.browser"
+ACTIVITY="com.gothwad.browser/.activity.main.MainActivity"
+
+# Detect ADB in PATH or standard macOS Android SDK location
+ADB_BIN="adb"
+if ! command -v adb >/dev/null 2>&1; then
+    if [ -f "$HOME/Library/Android/sdk/platform-tools/adb" ]; then
+        ADB_BIN="$HOME/Library/Android/sdk/platform-tools/adb"
+    fi
+fi
+
+notify_mac() {
+    local title="$1"
+    local message="$2"
+    osascript -e "display notification \"$message\" with title \"$title\"" 2>/dev/null || true
+}
+
+show_dialog_mac() {
+    local text="$1"
+    osascript -e "display alert \"Gothwad TV Browser\" message \"$text\" buttons {\"OK\"} default button \"OK\"" 2>/dev/null || true
+}
+
+if command -v "$ADB_BIN" >/dev/null 2>&1; then
+    # Check for connected devices or emulators
+    DEVICES=$("$ADB_BIN" devices | grep -v "List of devices" | grep "device$" | awk '{print $1}')
+    
+    if [ -n "$DEVICES" ]; then
+        notify_mac "Gothwad TV Browser" "Launching on connected device..."
+        
+        # Check if installed, if not install
+        if ! "$ADB_BIN" shell pm list packages "$PACKAGE" 2>/dev/null | grep -q "$PACKAGE"; then
+            if [ -f "$APK_PATH" ]; then
+                notify_mac "Gothwad TV Browser" "Installing application..."
+                "$ADB_BIN" install -r "$APK_PATH"
+            fi
+        fi
+        
+        # Launch activity
+        "$ADB_BIN" shell am start -n "$ACTIVITY" >/dev/null 2>&1
+        exit 0
+    fi
+fi
+
+# If no active ADB or emulator
+show_dialog_mac "To run Gothwad TV Browser on macOS:
+
+1. Start an Android Emulator (Android Studio, Genymotion, or BlueStacks for Mac).
+2. Or connect your Android TV / Phone via USB or Wi-Fi (adb connect <IP>:5555).
+
+Included APK location:
+$APK_PATH"

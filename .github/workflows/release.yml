@@ -182,6 +182,18 @@ jobs:
             "${{ steps.versioning.outputs.v_name }}" \
             "release_out"
 
+      - name: Build macOS Package (.app in .zip)
+        run: |
+          chmod +x packaging/macos/build-macos-package.sh
+          RELEASE_APK="release_out/GothwadTVBrowser-v${{ steps.versioning.outputs.v_name }}-Release.apk"
+          if [ ! -f "$RELEASE_APK" ]; then
+            RELEASE_APK="release_out/GothwadTVBrowser-v${{ steps.versioning.outputs.v_name }}-Debug.apk"
+          fi
+          ./packaging/macos/build-macos-package.sh \
+            "$RELEASE_APK" \
+            "${{ steps.versioning.outputs.v_name }}" \
+            "release_out"
+
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         env:
@@ -199,3 +211,4 @@ jobs:
             release_out/gothwad-browser_${{ steps.versioning.outputs.v_name }}_all.deb
             release_out/gothwad-browser-linux-v${{ steps.versioning.outputs.v_name }}.tar.gz
             release_out/gothwad-browser-windows-${{ steps.versioning.outputs.v_name }}.zip
+            release_out/gothwad-browser-macos-${{ steps.versioning.outputs.v_name }}.zip
