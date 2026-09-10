@@ -158,6 +158,18 @@ jobs:
           rm -f "$KS_PATH"
           echo "Keystore securely cleaned up."
 
+      - name: Build Linux Packages (.deb & .tar.gz)
+        run: |
+          chmod +x packaging/linux/build-linux-packages.sh
+          RELEASE_APK="release_out/GothwadTVBrowser-v${{ steps.versioning.outputs.v_name }}-Release.apk"
+          if [ ! -f "$RELEASE_APK" ]; then
+            RELEASE_APK="release_out/GothwadTVBrowser-v${{ steps.versioning.outputs.v_name }}-Debug.apk"
+          fi
+          ./packaging/linux/build-linux-packages.sh \
+            "$RELEASE_APK" \
+            "${{ steps.versioning.outputs.v_name }}" \
+            "release_out"
+
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         env:
@@ -172,3 +184,5 @@ jobs:
             release_out/GothwadTVBrowser-v${{ steps.versioning.outputs.v_name }}-Release.apk
             release_out/GothwadTVBrowser-v${{ steps.versioning.outputs.v_name }}-Debug.apk
             release_out/GothwadTVBrowser-v${{ steps.versioning.outputs.v_name }}-PlayStore.aab
+            release_out/gothwad-browser_${{ steps.versioning.outputs.v_name }}_all.deb
+            release_out/gothwad-browser-linux-v${{ steps.versioning.outputs.v_name }}.tar.gz

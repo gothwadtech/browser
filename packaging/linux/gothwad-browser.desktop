@@ -1,0 +1,21 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Gothwad TV Browser
+GenericName=Web Browser
+Comment=Fast, modern, tabbed web browser for TV, Tablets, Phones and Linux
+Exec=gothwad-browser %u
+Icon=gothwad-browser
+Terminal=false
+Categories=Network;WebBrowser;
+MimeType=text/html;text/xml;application/xhtml+xml;x-scheme-handler/http;x-scheme-handler/https;
+StartupNotify=true
+Actions=NewTab;NewIncognito;
+
+[Desktop Action NewTab]
+Name=Open New Tab
+Exec=gothwad-browser --new-tab
+
+[Desktop Action NewIncognito]
+Name=Open Incognito Window
+Exec=gothwad-browser --incognito

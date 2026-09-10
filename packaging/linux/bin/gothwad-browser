@@ -1,0 +1,118 @@
+#!/usr/bin/env bash
+# ==============================================================================
+# Gothwad TV Browser - Linux Desktop Launcher
+# ==============================================================================
+
+set -e
+
+APP_ID="com.gothwad.browser"
+APP_NAME="Gothwad TV Browser"
+
+# Find bundled APK path
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+APK_CANDIDATES=(
+    "/usr/share/gothwad-browser/app.apk"
+    "/usr/local/share/gothwad-browser/app.apk"
+    "$HOME/.local/share/gothwad-browser/app.apk"
+    "$SCRIPT_DIR/app.apk"
+    "$SCRIPT_DIR/../share/gothwad-browser/app.apk"
+    "$SCRIPT_DIR/gothwad-browser.apk"
+)
+
+APK_PATH=""
+for path in "${APK_CANDIDATES[@]}"; do
+    if [ -f "$path" ]; then
+        APK_PATH="$path"
+        break
+    fi
+done
+
+TARGET_URL="$1"
+
+show_message() {
+    local msg="$1"
+    if command -v zenity >/dev/null 2>&1; then
+        zenity --info --title="$APP_NAME" --text="$msg" --width=450 2>/dev/null || true
+    elif command -v kdialog >/dev/null 2>&1; then
+        kdialog --title "$APP_NAME" --msgbox "$msg" 2>/dev/null || true
+    elif command -v notify-send >/dev/null 2>&1; then
+        notify-send "$APP_NAME" "$msg" 2>/dev/null || true
+    else
+        echo "[$APP_NAME] $msg"
+    fi
+}
+
+show_error() {
+    local msg="$1"
+    if command -v zenity >/dev/null 2>&1; then
+        zenity --error --title="$APP_NAME" --text="$msg" --width=450 2>/dev/null || true
+    elif command -v kdialog >/dev/null 2>&1; then
+        kdialog --title "$APP_NAME" --error "$msg" 2>/dev/null || true
+    else
+        echo "[$APP_NAME ERROR] $msg" >&2
+    fi
+}
+
+# Check if Waydroid is available
+if command -v waydroid >/dev/null 2>&1; then
+    # 1. Check if waydroid container is initialized
+    if ! waydroid status 2>&1 | grep -qi "SESSION"; then
+        # Check if container is running
+        if ! systemctl is-active --quiet waydroid-container 2>/dev/null; then
+            if command -v pkexec >/dev/null 2>&1; then
+                pkexec systemctl start waydroid-container || true
+            else
+                sudo systemctl start waydroid-container || true
+            fi
+        fi
+    fi
+
+    # 2. Check if Waydroid session is active
+    if ! waydroid status 2>&1 | grep -qi "RUNNING"; then
+        show_message "Starting $APP_NAME background session... Please wait." &
+        waydroid session start >/dev/null 2>&1 &
+        sleep 2
+    fi
+
+    # 3. Check if app is installed in Waydroid
+    IS_INSTALLED=false
+    if waydroid app list 2>/dev/null | grep -q "$APP_ID"; then
+        IS_INSTALLED=true
+    fi
+
+    if [ "$IS_INSTALLED" = false ]; then
+        if [ -n "$APK_PATH" ] && [ -f "$APK_PATH" ]; then
+            echo "Installing $APP_NAME into Waydroid..."
+            waydroid app install "$APK_PATH" || true
+        else
+            show_error "APK file not found! Please reinstall Gothwad Browser."
+            exit 1
+        fi
+    fi
+
+    # 4. Launch the browser
+    if [ -n "$TARGET_URL" ] && [[ "$TARGET_URL" =~ ^https?:// ]]; then
+        waydroid app launch "$APP_ID" "$TARGET_URL" || waydroid app launch "$APP_ID"
+    else
+        waydroid app launch "$APP_ID"
+    fi
+    exit 0
+fi
+
+# Fallback: check if ADB device is connected (scrcpy or emulator)
+if command -v adb >/dev/null 2>&1 && adb get-state >/dev/null 2>&1; then
+    if [ -n "$APK_PATH" ] && [ -f "$APK_PATH" ]; then
+        adb install -r "$APK_PATH" 2>/dev/null || true
+    fi
+    if [ -n "$TARGET_URL" ] && [[ "$TARGET_URL" =~ ^https?:// ]]; then
+        adb shell am start -a android.intent.action.VIEW -d "$TARGET_URL" "$APP_ID"
+    else
+        adb shell monkey -p "$APP_ID" -c android.intent.category.LAUNCHER 1
+    fi
+    exit 0
+fi
+
+# If no runtime found, provide quick instructions to the user
+INSTRUCTION="Waydroid is required to run $APP_NAME natively on Linux with hardware acceleration.\n\nQuick 1-minute setup:\n• Ubuntu/Debian: sudo apt install waydroid\n• Fedora: sudo dnf install waydroid\n• Arch/Manjaro: sudo pacman -S waydroid\n\nAfter installing Waydroid, launch Gothwad Browser again!"
+show_message "$INSTRUCTION"
+exit 1

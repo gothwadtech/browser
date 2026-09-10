@@ -175,7 +175,19 @@ jobs:
           rm -f "$KS_PATH"
           echo "Keystore securely cleaned up."
 
-      - name: Upload Signed Release APK, Debug APK & AAB Artifacts
+      - name: Build Linux Packages (.deb & .tar.gz)
+        run: |
+          chmod +x packaging/linux/build-linux-packages.sh
+          RELEASE_APK="output_release/GothwadTVBrowser-v${{ steps.versioning.outputs.v_name }}-Release.apk"
+          if [ ! -f "$RELEASE_APK" ]; then
+            RELEASE_APK="output_release/GothwadTVBrowser-v${{ steps.versioning.outputs.v_name }}-Debug.apk"
+          fi
+          ./packaging/linux/build-linux-packages.sh \
+            "$RELEASE_APK" \
+            "${{ steps.versioning.outputs.v_name }}" \
+            "output_release"
+
+      - name: Upload Signed Release APK, Debug APK, AAB & Linux Packages
         uses: actions/upload-artifact@v4
         with:
           name: Gothwad-TV-Browser-v${{ steps.versioning.outputs.v_name }}-Build${{ steps.versioning.outputs.v_code }}
@@ -195,3 +207,5 @@ jobs:
             output_release/GothwadTVBrowser-v${{ steps.versioning.outputs.v_name }}-Release.apk
             output_release/GothwadTVBrowser-v${{ steps.versioning.outputs.v_name }}-Debug.apk
             output_release/GothwadTVBrowser-v${{ steps.versioning.outputs.v_name }}-PlayStore.aab
+            output_release/gothwad-browser_${{ steps.versioning.outputs.v_name }}_all.deb
+            output_release/gothwad-browser-linux-v${{ steps.versioning.outputs.v_name }}.tar.gz
