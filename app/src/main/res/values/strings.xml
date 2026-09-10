@@ -80,6 +80,7 @@
     <string name="can_not_create_downloads">Can not create downloads dir</string>
     <string name="voice_search_not_found">Voice search not found</string>
     <string name="voice_search_listening">Listening…</string>
+    <string name="voice_search_processing">Processing…</string>
     <string name="voice_search_speak_now">Speak now into your microphone</string>
     <string name="voice_search_try_again">Speak Again</string>
     <string name="voice_search_didnt_hear">Didn\'t catch that. Please speak again.</string>
