@@ -463,6 +463,10 @@ fun MainActivity.handleDpadEvent(event: KeyEvent): Boolean {
     } else {
         // 4. Web Page Active
         if (config.enableVirtualCursor) {
+            // Physical Enter key from a keyboard should reach the webpage natively (e.g. submitting forms, sending messages in Telegram/Google)
+            if (keyCode == KeyEvent.KEYCODE_ENTER || keyCode == KeyEvent.KEYCODE_NUMPAD_ENTER) {
+                return false
+            }
             val canScrollUp = canWebPageScrollUp()
             // If cursor is at the very top edge and the webpage cannot scroll up anymore, navigate into Toolbar
             if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_DPAD_UP &&

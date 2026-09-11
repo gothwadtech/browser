@@ -188,7 +188,7 @@ class CursorDrawerDelegate(val context: Context, val surface: View) {
                 }
                 return true
             }
-            KeyEvent.KEYCODE_DPAD_CENTER, KeyEvent.KEYCODE_ENTER, KeyEvent.KEYCODE_NUMPAD_ENTER, KeyEvent.KEYCODE_BUTTON_A -> {
+            KeyEvent.KEYCODE_DPAD_CENTER, KeyEvent.KEYCODE_BUTTON_A -> {
                 // [DPADNavigationEventsAdapter] may emit several selection key codes for one physical
                 // click; each is a distinct KeyEvent so keyDispatcherState.isTracking is per-key.
                 // Map them to a single touch DOWN/UP stream.

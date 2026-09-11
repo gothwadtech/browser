@@ -324,13 +324,7 @@ internal class WebEngineCallback(val activity: MainActivity, val tab: WebTabStat
         y: Int
     ) {
         activity.uiHandler.post {
-            activity.vb.vCursorMenu.show(
-                tab, this, cursorDrawer,
-                baseUri, linkUri, srcUri,
-                title, altText, textContent,
-                x, y,
-                activity.backNavigationEventsAdapter
-            )
+            suggestActionsForLink(baseUri, linkUri, srcUri, title, altText, textContent, x, y)
         }
     }
 

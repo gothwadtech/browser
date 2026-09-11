@@ -169,13 +169,6 @@ open class WebViewEx(context: Context, val callback: Callback, val jsInterface: 
         isFocusable = true
         isFocusableInTouchMode = true
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            setOnContextClickListener { _ ->
-                showWebContextMenu(lastPointerX, lastPointerY)
-                true
-            }
-        }
-
         webChromeClient_ = WebViewExClients.createWebChromeClient(
             webViewEx = this,
             callback = callback,
@@ -420,12 +413,6 @@ open class WebViewEx(context: Context, val callback: Callback, val jsInterface: 
         lastPointerX = event.x.toInt()
         lastPointerY = event.y.toInt()
 
-        if ((event.actionMasked == MotionEvent.ACTION_BUTTON_PRESS && event.actionButton == MotionEvent.BUTTON_SECONDARY) ||
-            ((event.buttonState and MotionEvent.BUTTON_SECONDARY) != 0 && event.actionMasked == MotionEvent.ACTION_DOWN)) {
-            showWebContextMenu(lastPointerX, lastPointerY)
-            return true
-        }
-
         return super.onGenericMotionEvent(event)
     }
 
@@ -435,12 +422,6 @@ open class WebViewEx(context: Context, val callback: Callback, val jsInterface: 
 
         lastPointerX = event.x.toInt()
         lastPointerY = event.y.toInt()
-
-        if ((event.actionMasked == MotionEvent.ACTION_BUTTON_PRESS && event.actionButton == MotionEvent.BUTTON_SECONDARY) ||
-            ((event.buttonState and MotionEvent.BUTTON_SECONDARY) != 0 && event.actionMasked == MotionEvent.ACTION_DOWN)) {
-            showWebContextMenu(lastPointerX, lastPointerY)
-            return true
-        }
 
         return super.onTouchEvent(event)
     }
