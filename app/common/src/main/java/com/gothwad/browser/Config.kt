@@ -29,6 +29,13 @@ class Config(val prefs: SharedPreferences) {
         const val CURSOR_STYLE_KEY = "cursor_style"
         const val BLOCKED_INPUT_DEVICES_KEY = "blocked_input_devices"
 
+        const val ENABLE_HARDWARE_MOUSE_CUSTOMIZATION_KEY = "enable_hardware_mouse_customization"
+        const val HARDWARE_MOUSE_SIZE_PERCENT_KEY = "hardware_mouse_size_percent"
+        const val HARDWARE_MOUSE_STYLE_KEY = "hardware_mouse_style"
+        const val HARDWARE_MOUSE_SIZE_PERCENT_MIN = 30
+        const val HARDWARE_MOUSE_SIZE_PERCENT_MAX = 300
+        const val HARDWARE_MOUSE_SIZE_PERCENT_DEFAULT = 100
+
         const val CURSOR_SIZE_PERCENT_MIN = 50
         const val CURSOR_SIZE_PERCENT_MAX = 200
         /** When true, analog stick / hat axes from generic motion events are not translated to DPAD keys. */
@@ -193,6 +200,28 @@ class Config(val prefs: SharedPreferences) {
         get() = prefs.getInt(CURSOR_STYLE_KEY, 0)
         set(value) {
             prefs.edit().putInt(CURSOR_STYLE_KEY, value).apply()
+        }
+
+    var enableHardwareMouseCustomization: Boolean
+        get() = prefs.getBoolean(ENABLE_HARDWARE_MOUSE_CUSTOMIZATION_KEY, true)
+        set(value) {
+            prefs.edit().putBoolean(ENABLE_HARDWARE_MOUSE_CUSTOMIZATION_KEY, value).apply()
+        }
+
+    var hardwareMouseSizePercent: Int
+        get() = prefs.getInt(HARDWARE_MOUSE_SIZE_PERCENT_KEY, HARDWARE_MOUSE_SIZE_PERCENT_DEFAULT)
+            .coerceIn(HARDWARE_MOUSE_SIZE_PERCENT_MIN, HARDWARE_MOUSE_SIZE_PERCENT_MAX)
+        set(value) {
+            prefs.edit().putInt(
+                HARDWARE_MOUSE_SIZE_PERCENT_KEY,
+                value.coerceIn(HARDWARE_MOUSE_SIZE_PERCENT_MIN, HARDWARE_MOUSE_SIZE_PERCENT_MAX)
+            ).apply()
+        }
+
+    var hardwareMouseStyle: Int
+        get() = prefs.getInt(HARDWARE_MOUSE_STYLE_KEY, 0)
+        set(value) {
+            prefs.edit().putInt(HARDWARE_MOUSE_STYLE_KEY, value).apply()
         }
 
     var disableMotionAxesDpadNavigation: Boolean

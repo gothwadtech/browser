@@ -78,6 +78,19 @@
     <string name="turn_on_unknown_sources_for_app">Please allow Browser to install apps from \"Unknown sources\" in system settings</string>
     <string name="storage_not_mounted">Storage not mounted</string>
     <string name="can_not_create_downloads">Can not create downloads dir</string>
+    <string name="hardware_mouse_pointer_title">Physical Mouse Pointer (USB / Bluetooth)</string>
+    <string name="hardware_mouse_pointer_desc">Customize size, style, and contrast of connected physical mouse pointer on TV</string>
+    <string name="hardware_mouse_pointer_enable">Enable Custom Pointer</string>
+    <string name="hardware_mouse_pointer_size">Pointer Size: %1$d%%</string>
+    <string name="hardware_mouse_pointer_style">Pointer Style &amp; Contrast</string>
+    <string name="hardware_mouse_preview">Live Preview</string>
+    <string-array name="hardware_mouse_styles">
+        <item>Classic White (Black Outline)</item>
+        <item>Dark Onyx (White Outline)</item>
+        <item>High-Contrast Neon Yellow (TV Distance)</item>
+        <item>Cyber Cyan (Gamer Glow)</item>
+        <item>Crimson Red</item>
+    </string-array>
     <string name="voice_search_not_found">Voice search not found</string>
     <string name="voice_search_listening">Listening…</string>
     <string name="voice_search_processing">Processing…</string>

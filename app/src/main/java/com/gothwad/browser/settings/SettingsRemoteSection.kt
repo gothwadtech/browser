@@ -17,6 +17,7 @@ import com.gothwad.browser.R
 import com.gothwad.browser.activity.main.MainActivity
 import com.gothwad.browser.databinding.ViewSettingsMainBinding
 import com.gothwad.browser.utils.HardwareInputManager
+import com.gothwad.browser.utils.HardwareMousePointerManager
 import com.gothwad.browser.utils.Utils
 
 object SettingsRemoteSection {
@@ -233,5 +234,89 @@ object SettingsRemoteSection {
         }
 
         updateDeviceList(hwInput.getConnectedDevices())
+
+        initHardwareMouseSettingsUI(context, vb, config, activity)
+    }
+
+    private fun initHardwareMouseSettingsUI(
+        context: Context,
+        vb: ViewSettingsMainBinding,
+        config: Config,
+        activity: Context?
+    ) {
+        val mainAct = activity as? MainActivity
+
+        vb.scEnableHardwareMouse.isChecked = config.enableHardwareMouseCustomization
+        vb.llHardwareMouseDetails.visibility = if (config.enableHardwareMouseCustomization) View.VISIBLE else View.GONE
+
+        val minSize = Config.HARDWARE_MOUSE_SIZE_PERCENT_MIN
+        val maxSize = Config.HARDWARE_MOUSE_SIZE_PERCENT_MAX
+        vb.sbHardwareMouseSize.max = maxSize - minSize
+        vb.sbHardwareMouseSize.progress = config.hardwareMouseSizePercent - minSize
+
+        fun updateSizeLabelAndPreview(size: Int) {
+            val desc = when {
+                size <= 40 -> "Mini"
+                size <= 70 -> "Small"
+                size <= 120 -> "Normal"
+                size <= 180 -> "Large"
+                size <= 240 -> "Extra Large"
+                else -> "Huge"
+            }
+            vb.tvHardwareMouseSizeValue.text = "$size% ($desc)"
+            val previewBm = HardwareMousePointerManager.createPreviewBitmap(context, size, config.hardwareMouseStyle)
+            vb.ivHardwareMousePreview.setImageBitmap(previewBm)
+        }
+
+        updateSizeLabelAndPreview(config.hardwareMouseSizePercent)
+
+        vb.scEnableHardwareMouse.setOnCheckedChangeListener { _, isChecked ->
+            config.enableHardwareMouseCustomization = isChecked
+            vb.llHardwareMouseDetails.visibility = if (isChecked) View.VISIBLE else View.GONE
+            HardwareMousePointerManager.invalidateCache()
+            mainAct?.let { HardwareMousePointerManager.applyToWindow(it.window) }
+        }
+
+        vb.sbHardwareMouseSize.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                val size = minSize + progress
+                config.hardwareMouseSizePercent = size
+                updateSizeLabelAndPreview(size)
+                if (fromUser) {
+                    HardwareMousePointerManager.invalidateCache()
+                    mainAct?.let { HardwareMousePointerManager.applyToWindow(it.window) }
+                }
+            }
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {}
+        })
+
+        fun applyPreset(presetSize: Int) {
+            val clamped = presetSize.coerceIn(minSize, maxSize)
+            config.hardwareMouseSizePercent = clamped
+            vb.sbHardwareMouseSize.progress = clamped - minSize
+            updateSizeLabelAndPreview(clamped)
+            HardwareMousePointerManager.invalidateCache()
+            mainAct?.let { HardwareMousePointerManager.applyToWindow(it.window) }
+        }
+
+        vb.btnMouseSizeMini.setOnClickListener { applyPreset(30) }
+        vb.btnMouseSizeCompact.setOnClickListener { applyPreset(60) }
+        vb.btnMouseSizeNormal.setOnClickListener { applyPreset(100) }
+        vb.btnMouseSizeLarge.setOnClickListener { applyPreset(150) }
+        vb.btnMouseSizeHuge.setOnClickListener { applyPreset(250) }
+
+        vb.spHardwareMouseStyle.setSelection(config.hardwareMouseStyle.coerceIn(0, 4))
+        vb.spHardwareMouseStyle.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                if (config.hardwareMouseStyle != position) {
+                    config.hardwareMouseStyle = position
+                    HardwareMousePointerManager.invalidateCache()
+                    updateSizeLabelAndPreview(config.hardwareMouseSizePercent)
+                    mainAct?.let { HardwareMousePointerManager.applyToWindow(it.window) }
+                }
+            }
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        }
     }
 }

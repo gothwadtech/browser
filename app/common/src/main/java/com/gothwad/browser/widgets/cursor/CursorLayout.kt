@@ -106,6 +106,14 @@ class CursorLayout @JvmOverloads constructor(context: Context, attrs: AttributeS
         return super.dispatchTouchEvent(ev)
     }
 
+    override fun onResolvePointerIcon(event: MotionEvent, pointerIndex: Int): android.view.PointerIcon? {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            val systemIcon = super.onResolvePointerIcon(event, pointerIndex)
+            return com.gothwad.browser.utils.HardwareMousePointerManager.resolvePointerIcon(context, systemIcon)
+        }
+        return super.onResolvePointerIcon(event, pointerIndex)
+    }
+
     override fun dispatchDraw(canvas: Canvas) {
         super.dispatchDraw(canvas)
         if (isInEditMode || willNotDraw()) {

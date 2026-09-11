@@ -38,6 +38,7 @@ import com.gothwad.browser.browser.tabs.TabsRowDialog
 import com.gothwad.browser.databinding.ActivityMainBinding
 import com.gothwad.browser.filemanager.FileManagerActivity
 import com.gothwad.browser.model.Download
+import com.gothwad.browser.utils.HardwareMousePointerManager
 import com.gothwad.browser.notes.NotesActivity
 import com.gothwad.browser.notes.clipboard.ClipboardActivity
 import com.gothwad.browser.service.downloads.DownloadService
@@ -207,6 +208,7 @@ open class MainActivity : AppCompatActivity(), ActionBar.Callback {
 
         onBackPressedDispatcher.addCallback(onBackPressedCallback)
         applySoftInputMode()
+        HardwareMousePointerManager.applyToWindow(window)
 
         window.decorView.viewTreeObserver.addOnGlobalFocusChangeListener { _, newFocus ->
             if (config.disableVirtualKeyboard && newFocus != null) {
@@ -357,6 +359,7 @@ open class MainActivity : AppCompatActivity(), ActionBar.Callback {
     override fun onResume() {
         super.onResume()
         applySoftInputMode()
+        HardwareMousePointerManager.applyToWindow(window)
         val intentFilter = IntentFilter("android.net.conn.CONNECTIVITY_CHANGE")
         registerReceiver(mConnectivityChangeReceiver, intentFilter)
         tabsModel.currentTab.value?.webEngine?.onResume()

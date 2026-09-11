@@ -15,6 +15,7 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.view.MotionEvent
+import android.view.PointerIcon
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputConnection
@@ -210,6 +211,14 @@ open class WebViewEx(context: Context, val callback: Callback, val jsInterface: 
         if (virtualCursorMode && DPADNavigationEventsAdapter.isNavigationGenericMotionSource(event.source))
             return false
         return super.dispatchGenericMotionEvent(event)
+    }
+
+    override fun onResolvePointerIcon(event: MotionEvent, pointerIndex: Int): PointerIcon? {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            val systemIcon = super.onResolvePointerIcon(event, pointerIndex)
+            return com.gothwad.browser.utils.HardwareMousePointerManager.resolvePointerIcon(context, systemIcon)
+        }
+        return super.onResolvePointerIcon(event, pointerIndex)
     }
 
     internal fun showCertificateErrorPage(error: SslError) {
