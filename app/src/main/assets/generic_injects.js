@@ -220,3 +220,24 @@ window.addEventListener("touchstart", function(e) {
         }
     }
 })();
+
+// Force Enable Zoom: Ensure pages can never disable pinch or user scaling
+(function() {
+    function ensureZoomable() {
+        var metas = document.querySelectorAll('meta[name="viewport"]');
+        for (var i = 0; i < metas.length; i++) {
+            var content = metas[i].getAttribute('content') || '';
+            if (/user-scalable\s*=\s*no/i.test(content) || /maximum-scale\s*=\s*1(\.0)?/i.test(content)) {
+                var updated = content
+                    .replace(/user-scalable\s*=\s*no/gi, 'user-scalable=yes')
+                    .replace(/maximum-scale\s*=\s*1(\.0)?/gi, 'maximum-scale=5.0');
+                metas[i].setAttribute('content', updated);
+            }
+        }
+    }
+    ensureZoomable();
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', ensureZoomable);
+    }
+})();
+

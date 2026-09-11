@@ -218,22 +218,30 @@ object SettingsGeneralSection {
 
         vb.btnQuickZoomIn.setOnClickListener {
             mainAct?.zoomWebIn()
-            vb.sbWebPageZoom.progress = (config.webPageZoomPercent - Config.WEB_PAGE_ZOOM_PERCENT_MIN).coerceIn(0, Config.WEB_PAGE_ZOOM_PERCENT_MAX - Config.WEB_PAGE_ZOOM_PERCENT_MIN)
-            vb.tvWebPageZoomValue.text = if (config.webPageZoomPercent == 100) "100% (Default)" else "${config.webPageZoomPercent}%"
-            Toast.makeText(context, "${config.webPageZoomPercent}%", Toast.LENGTH_SHORT).show()
+            val zoom = config.webPageZoomPercent
+            vb.sbWebPageZoom.progress = (zoom - Config.WEB_PAGE_ZOOM_PERCENT_MIN).coerceIn(0, Config.WEB_PAGE_ZOOM_PERCENT_MAX - Config.WEB_PAGE_ZOOM_PERCENT_MIN)
+            val isDesk = config.desktopMode.value || config.userAgentString.value?.contains("Windows") == true
+            val modeTitle = if (isDesk) "Desktop" else "Mobile"
+            vb.tvWebPageZoomValue.text = if (zoom == 100) "$modeTitle: 100% (Default)" else "$modeTitle: $zoom%"
+            Toast.makeText(context, "$modeTitle: $zoom%", Toast.LENGTH_SHORT).show()
         }
 
         vb.btnQuickZoomOut.setOnClickListener {
             mainAct?.zoomWebOut()
-            vb.sbWebPageZoom.progress = (config.webPageZoomPercent - Config.WEB_PAGE_ZOOM_PERCENT_MIN).coerceIn(0, Config.WEB_PAGE_ZOOM_PERCENT_MAX - Config.WEB_PAGE_ZOOM_PERCENT_MIN)
-            vb.tvWebPageZoomValue.text = if (config.webPageZoomPercent == 100) "100% (Default)" else "${config.webPageZoomPercent}%"
-            Toast.makeText(context, "${config.webPageZoomPercent}%", Toast.LENGTH_SHORT).show()
+            val zoom = config.webPageZoomPercent
+            vb.sbWebPageZoom.progress = (zoom - Config.WEB_PAGE_ZOOM_PERCENT_MIN).coerceIn(0, Config.WEB_PAGE_ZOOM_PERCENT_MAX - Config.WEB_PAGE_ZOOM_PERCENT_MIN)
+            val isDesk = config.desktopMode.value || config.userAgentString.value?.contains("Windows") == true
+            val modeTitle = if (isDesk) "Desktop" else "Mobile"
+            vb.tvWebPageZoomValue.text = if (zoom == 100) "$modeTitle: 100% (Default)" else "$modeTitle: $zoom%"
+            Toast.makeText(context, "$modeTitle: $zoom%", Toast.LENGTH_SHORT).show()
         }
 
         vb.btnQuickZoomReset.setOnClickListener {
             mainAct?.applyWebPageZoom(100)
             vb.sbWebPageZoom.progress = 100 - Config.WEB_PAGE_ZOOM_PERCENT_MIN
-            vb.tvWebPageZoomValue.text = "100% (Default)"
+            val isDesk = config.desktopMode.value || config.userAgentString.value?.contains("Windows") == true
+            val modeTitle = if (isDesk) "Desktop" else "Mobile"
+            vb.tvWebPageZoomValue.text = "$modeTitle: 100% (Default)"
             Toast.makeText(context, R.string.quick_zoom_reset, Toast.LENGTH_SHORT).show()
         }
     }

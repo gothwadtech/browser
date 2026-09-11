@@ -86,11 +86,21 @@ class WebViewWebEngine(val tab: WebTabState) : WebEngine, CursorDrawerDelegate.C
     override fun goForward() { webView?.goForward() }
     override fun canZoomIn(): Boolean = true
 
+    private fun isEngineInDesktopMode(): Boolean {
+        val cfg = AppContext.provideConfig()
+        val effectiveUa = userAgentString ?: cfg.userAgentString.value ?: ""
+        return cfg.desktopMode.value ||
+               effectiveUa.contains("Windows") ||
+               effectiveUa.contains("X11; Linux x86_64") ||
+               effectiveUa.contains("Macintosh")
+    }
+
     override fun zoomIn() {
         val cfg = AppContext.provideConfig()
-        val current = cfg.webPageZoomPercent
+        val isDesktop = isEngineInDesktopMode()
+        val current = cfg.getEffectiveZoom(isDesktop)
         val next = Config.STANDARD_ZOOM_LEVELS.firstOrNull { it > current } ?: Config.WEB_PAGE_ZOOM_PERCENT_MAX
-        cfg.webPageZoomPercent = next
+        cfg.setEffectiveZoom(isDesktop, next)
         setPageZoom(next)
     }
 
@@ -98,9 +108,10 @@ class WebViewWebEngine(val tab: WebTabState) : WebEngine, CursorDrawerDelegate.C
 
     override fun zoomOut() {
         val cfg = AppContext.provideConfig()
-        val current = cfg.webPageZoomPercent
+        val isDesktop = isEngineInDesktopMode()
+        val current = cfg.getEffectiveZoom(isDesktop)
         val prev = Config.STANDARD_ZOOM_LEVELS.lastOrNull { it < current } ?: Config.WEB_PAGE_ZOOM_PERCENT_MIN
-        cfg.webPageZoomPercent = prev
+        cfg.setEffectiveZoom(isDesktop, prev)
         setPageZoom(prev)
     }
 

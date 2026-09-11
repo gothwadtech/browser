@@ -320,6 +320,39 @@
                     tools:text="100%" />
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btnZoomTargetMobile"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="6dp"
+                    android:background="@drawable/bg_tv_tab_pill"
+                    android:focusable="true"
+                    android:text="📱 Mobile View Zoom"
+                    android:textColor="@color/selector_tv_tab_pill_text"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/btnZoomTargetDesktop"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:layout_marginStart="6dp"
+                    android:background="@drawable/bg_tv_tab_pill"
+                    android:focusable="true"
+                    android:text="🖥️ Desktop View Zoom"
+                    android:textColor="@color/selector_tv_tab_pill_text"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
             <SeekBar
                 android:id="@+id/sbWebPageZoom"
                 android:layout_width="match_parent"

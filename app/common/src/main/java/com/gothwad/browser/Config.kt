@@ -51,6 +51,8 @@ class Config(val prefs: SharedPreferences) {
         const val UI_SCALE_PERCENT_DEFAULT = 50
         val STANDARD_ZOOM_LEVELS = intArrayOf(25, 33, 50, 67, 75, 80, 90, 100, 110, 125, 150, 175, 200, 250, 300)
         const val WEB_PAGE_ZOOM_PERCENT_KEY = "web_page_zoom_percent"
+        const val MOBILE_WEB_PAGE_ZOOM_PERCENT_KEY = "mobile_web_page_zoom_percent"
+        const val DESKTOP_WEB_PAGE_ZOOM_PERCENT_KEY = "desktop_web_page_zoom_percent"
         const val WEB_PAGE_ZOOM_PERCENT_MIN = 25
         const val WEB_PAGE_ZOOM_PERCENT_MAX = 300
         const val WEB_PAGE_ZOOM_PERCENT_DEFAULT = 100
@@ -274,15 +276,43 @@ class Config(val prefs: SharedPreferences) {
         }
     }
 
-    /** Default web page zoom percent for websites (100 = default, 50 to 300). */
-    var webPageZoomPercent: Int
-        get() = prefs.getInt(WEB_PAGE_ZOOM_PERCENT_KEY, WEB_PAGE_ZOOM_PERCENT_DEFAULT)
+    /** Web page zoom percent for mobile view (100 = default, 25 to 300). */
+    var mobileWebPageZoomPercent: Int
+        get() = prefs.getInt(MOBILE_WEB_PAGE_ZOOM_PERCENT_KEY, prefs.getInt(WEB_PAGE_ZOOM_PERCENT_KEY, WEB_PAGE_ZOOM_PERCENT_DEFAULT))
             .coerceIn(WEB_PAGE_ZOOM_PERCENT_MIN, WEB_PAGE_ZOOM_PERCENT_MAX)
         set(value) {
-            prefs.edit().putInt(
-                WEB_PAGE_ZOOM_PERCENT_KEY,
-                value.coerceIn(WEB_PAGE_ZOOM_PERCENT_MIN, WEB_PAGE_ZOOM_PERCENT_MAX)
-            ).apply()
+            val clamped = value.coerceIn(WEB_PAGE_ZOOM_PERCENT_MIN, WEB_PAGE_ZOOM_PERCENT_MAX)
+            prefs.edit().putInt(MOBILE_WEB_PAGE_ZOOM_PERCENT_KEY, clamped).apply()
+        }
+
+    /** Web page zoom percent for desktop view (100 = default, 25 to 300). */
+    var desktopWebPageZoomPercent: Int
+        get() = prefs.getInt(DESKTOP_WEB_PAGE_ZOOM_PERCENT_KEY, prefs.getInt(WEB_PAGE_ZOOM_PERCENT_KEY, WEB_PAGE_ZOOM_PERCENT_DEFAULT))
+            .coerceIn(WEB_PAGE_ZOOM_PERCENT_MIN, WEB_PAGE_ZOOM_PERCENT_MAX)
+        set(value) {
+            val clamped = value.coerceIn(WEB_PAGE_ZOOM_PERCENT_MIN, WEB_PAGE_ZOOM_PERCENT_MAX)
+            prefs.edit().putInt(DESKTOP_WEB_PAGE_ZOOM_PERCENT_KEY, clamped).apply()
+        }
+
+    fun getEffectiveZoom(isDesktop: Boolean): Int {
+        return if (isDesktop) desktopWebPageZoomPercent else mobileWebPageZoomPercent
+    }
+
+    fun setEffectiveZoom(isDesktop: Boolean, percent: Int) {
+        val clamped = percent.coerceIn(WEB_PAGE_ZOOM_PERCENT_MIN, WEB_PAGE_ZOOM_PERCENT_MAX)
+        if (isDesktop) {
+            desktopWebPageZoomPercent = clamped
+        } else {
+            mobileWebPageZoomPercent = clamped
+        }
+        prefs.edit().putInt(WEB_PAGE_ZOOM_PERCENT_KEY, clamped).apply()
+    }
+
+    /** Current effective web page zoom percent based on active desktop/mobile mode (100 = default, 25 to 300). */
+    var webPageZoomPercent: Int
+        get() = getEffectiveZoom(desktopMode.value || userAgentString.value?.contains("Windows") == true)
+        set(value) {
+            setEffectiveZoom(desktopMode.value || userAgentString.value?.contains("Windows") == true, value)
         }
 
     /** Whether to record visited URLs and searches into local history. */

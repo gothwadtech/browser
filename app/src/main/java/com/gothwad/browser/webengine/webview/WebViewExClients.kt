@@ -265,6 +265,11 @@ object WebViewExClients {
                 super.onPageFinished(view, url)
                 callback.onPageFinished(url)
                 webViewEx.evaluateJavascript(webViewEx.getGenericJSInjects(), null)
+                val isDesktop = webViewEx.isDesktopModeEnabled()
+                val configuredZoom = webViewEx.config.getEffectiveZoom(isDesktop).coerceIn(Config.WEB_PAGE_ZOOM_PERCENT_MIN, Config.WEB_PAGE_ZOOM_PERCENT_MAX)
+                if (webViewEx.settings.textZoom != configuredZoom) {
+                    webViewEx.settings.textZoom = configuredZoom
+                }
             }
 
             override fun onReceivedSslError(view: WebView, handler: SslErrorHandler, error: SslError) {

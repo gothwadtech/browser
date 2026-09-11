@@ -127,6 +127,12 @@ class WebsiteMenuPopup(private val activity: MainActivity) {
             currentTab?.webEngine?.reload()
         }
 
+        // Desktop Site Checkbox setup
+        val btnDesktop: View = contentView.findViewById(R.id.btnWebMenuDesktop)
+        val cbDesktop: CheckBox = contentView.findViewById(R.id.cbWebMenuDesktop)
+        val isDesktop = config.desktopMode.value || config.userAgentString.value?.contains("Windows") == true
+        cbDesktop.isChecked = isDesktop
+
         // 🔎 Website Zoom Controls
         val btnZoomOut: ImageButton = contentView.findViewById(R.id.btnWebZoomOut)
         val btnZoomIn: ImageButton = contentView.findViewById(R.id.btnWebZoomIn)
@@ -134,7 +140,10 @@ class WebsiteMenuPopup(private val activity: MainActivity) {
         val tvZoomPercent: TextView = contentView.findViewById(R.id.tvWebZoomPercent)
 
         fun updateZoomDisplay() {
-            tvZoomPercent.text = "${config.webPageZoomPercent}%"
+            val isDesk = cbDesktop.isChecked
+            val zoom = config.getEffectiveZoom(isDesk)
+            val modeLabel = if (isDesk) "Desktop" else "Mobile"
+            tvZoomPercent.text = "$zoom% ($modeLabel)"
         }
 
         updateZoomDisplay()
@@ -150,10 +159,11 @@ class WebsiteMenuPopup(private val activity: MainActivity) {
         }
 
         btnZoomReset.setOnClickListener {
+            val isDesk = cbDesktop.isChecked
+            config.setEffectiveZoom(isDesk, 100)
             activity.applyWebPageZoom(100)
-            config.webPageZoomPercent = 100
             updateZoomDisplay()
-            Toast.makeText(activity, "Website zoom reset to 100%", Toast.LENGTH_SHORT).show()
+            Toast.makeText(activity, "Zoom reset to 100%", Toast.LENGTH_SHORT).show()
         }
 
         // 1. New Tab
@@ -162,21 +172,19 @@ class WebsiteMenuPopup(private val activity: MainActivity) {
         }
 
         // 2. Desktop Site Checkbox
-        val btnDesktop: View = contentView.findViewById(R.id.btnWebMenuDesktop)
-        val cbDesktop: CheckBox = contentView.findViewById(R.id.cbWebMenuDesktop)
-        val isDesktop = config.desktopMode.value || config.userAgentString.value?.contains("Windows") == true
-        cbDesktop.isChecked = isDesktop
-
         bindItem(btnDesktop) {
             val willBeDesktop = !cbDesktop.isChecked
             cbDesktop.isChecked = willBeDesktop
             config.desktopMode.value = willBeDesktop
             config.userAgentString.value = if (willBeDesktop) Config.DESKTOP_UA else null
+            val newZoom = config.getEffectiveZoom(willBeDesktop)
             for (tab in activity.tabsModel.tabsStates) {
                 tab.webEngine.userAgentString = if (willBeDesktop) Config.DESKTOP_UA else null
+                tab.webEngine.setPageZoom(newZoom)
             }
             currentTab?.webEngine?.reload()
-            Toast.makeText(activity, if (willBeDesktop) "Desktop mode enabled" else "Mobile mode enabled", Toast.LENGTH_SHORT).show()
+            updateZoomDisplay()
+            Toast.makeText(activity, if (willBeDesktop) "Desktop mode enabled (${newZoom}% zoom)" else "Mobile mode enabled (${newZoom}% zoom)", Toast.LENGTH_SHORT).show()
         }
 
         // 3. Find In Page

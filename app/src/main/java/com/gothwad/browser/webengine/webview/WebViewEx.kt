@@ -125,8 +125,9 @@ open class WebViewEx(context: Context, val callback: Callback, val jsInterface: 
             displayZoomControls = false
             layoutAlgorithm = WebSettings.LayoutAlgorithm.NORMAL
             defaultTextEncodingName = "UTF-8"
-            textZoom = 100
-            val initialZoom = config.webPageZoomPercent.coerceIn(Config.WEB_PAGE_ZOOM_PERCENT_MIN, Config.WEB_PAGE_ZOOM_PERCENT_MAX)
+            val isDesktop = isDesktopModeEnabled()
+            val initialZoom = config.getEffectiveZoom(isDesktop).coerceIn(Config.WEB_PAGE_ZOOM_PERCENT_MIN, Config.WEB_PAGE_ZOOM_PERCENT_MAX)
+            textZoom = initialZoom
             currentAppliedZoomPercent = initialZoom
             setInitialScale(if (initialZoom == 100) 0 else initialZoom)
             domStorageEnabled = true
@@ -445,6 +446,8 @@ open class WebViewEx(context: Context, val callback: Callback, val jsInterface: 
 
     fun applyDesktopMode() {
         val isDesktop = isDesktopModeEnabled()
+        val targetZoom = config.getEffectiveZoom(isDesktop)
+        applyZoom(targetZoom)
 
         if (WebViewFeature.isFeatureSupported(WebViewFeature.DOCUMENT_START_SCRIPT)) {
             try {
@@ -501,20 +504,16 @@ open class WebViewEx(context: Context, val callback: Callback, val jsInterface: 
 
     fun applyZoom(percent: Int) {
         val clamped = percent.coerceIn(Config.WEB_PAGE_ZOOM_PERCENT_MIN, Config.WEB_PAGE_ZOOM_PERCENT_MAX)
-        settings.textZoom = 100
-        val old = currentAppliedZoomPercent
-        if (old > 0 && clamped > 0 && old != clamped) {
-            val factor = clamped.toFloat() / old.toFloat()
-            zoomBy(factor)
-        }
+        settings.textZoom = clamped
         currentAppliedZoomPercent = clamped
         setInitialScale(if (clamped == 100) 0 else clamped)
     }
 
     fun onPageStartedResetZoom() {
-        val configuredZoom = config.webPageZoomPercent.coerceIn(Config.WEB_PAGE_ZOOM_PERCENT_MIN, Config.WEB_PAGE_ZOOM_PERCENT_MAX)
+        val isDesktop = isDesktopModeEnabled()
+        val configuredZoom = config.getEffectiveZoom(isDesktop).coerceIn(Config.WEB_PAGE_ZOOM_PERCENT_MIN, Config.WEB_PAGE_ZOOM_PERCENT_MAX)
         currentAppliedZoomPercent = configuredZoom
-        settings.textZoom = 100
+        settings.textZoom = configuredZoom
         setInitialScale(if (configuredZoom == 100) 0 else configuredZoom)
     }
 }

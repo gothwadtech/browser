@@ -170,11 +170,13 @@ class ChromeMenuPopup(private val activity: MainActivity) {
             cbDesktop.isChecked = willBeDesktop
             config.desktopMode.value = willBeDesktop
             config.userAgentString.value = if (willBeDesktop) Config.DESKTOP_UA else null
+            val newZoom = config.getEffectiveZoom(willBeDesktop)
             for (tab in activity.tabsModel.tabsStates) {
                 tab.webEngine.userAgentString = if (willBeDesktop) Config.DESKTOP_UA else null
+                tab.webEngine.setPageZoom(newZoom)
             }
             currentTab?.webEngine?.reload()
-            Toast.makeText(activity, if (willBeDesktop) "Desktop mode enabled for all websites" else "Mobile mode enabled", Toast.LENGTH_SHORT).show()
+            Toast.makeText(activity, if (willBeDesktop) "Desktop mode enabled (${newZoom}% zoom)" else "Mobile mode enabled (${newZoom}% zoom)", Toast.LENGTH_SHORT).show()
         }
 
         // 9. Help & feedback
